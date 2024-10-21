@@ -39,19 +39,40 @@ def cadastrarUsuario(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['senha'])
-            user.save()
+            try:
+                user.save()
+            except Exception as e:
+                messages.error(request, f"Erro ao salvar o usuário: {e}")
+                return render(request, 'user/cadastro.html', {'form': form})
 
-            perfil = Perfil(
-                cpf=user.cpf,
-                sobre='',
-                nivelExperiencia='',
-                certificacoes=[],
-                habilidades=[],
-                redesSociais={}
-            )
-            perfil.save()
-            messages.success(request, "Usuário cadastrado com sucesso!")
-            return redirect('user:index')
+            if user.iduser is None or user.cpf is None:
+                messages.error(request, "Erro: iduser e CPF são obrigatórios.")
+                return render(request, 'user/cadastro.html', {'form': form})
+
+            if Perfil.objects(iduser=user.iduser).first():
+                messages.error(request, "Erro: Já existe um perfil com este iduser.")
+                return render(request, 'user/cadastro.html', {'form': form})
+
+            try:
+                perfil = Perfil(
+                    iduser=user.iduser,
+                    nome=user.nome,
+                    cpf=user.cpf,
+                    sobre='',
+                    nivelExperiencia='',
+                    certificacoes=[],
+                    habilidades=[],
+                    redesSociais={}
+                )
+                print("Tentando salvar o perfil...")
+                perfil.save()
+                print("Perfil salvo com sucesso!")
+                messages.success(request, "Usuário e perfil cadastrados com sucesso!")
+                return redirect('user:index')
+            except Exception as e:
+                print(f"Erro ao salvar o perfil: {e}")
+                messages.error(request, f"Erro ao salvar o perfil: {e}")
+                return render(request, 'user/cadastro.html', {'form': form})
         else:
             messages.error(request, "Erro no cadastro. Verifique os dados.")
     else:

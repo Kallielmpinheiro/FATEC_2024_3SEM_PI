@@ -64,99 +64,10 @@
                         <label for="{{ form.senha.typeUser }}" class="mt-7">O que você ser?</label>
                         {{ form.typeUser }}
                     </div>
-    
                     <button class="btn-login">Cadastrar-se gratuitamente</button>
-                    
                 </form>
-                
             </div>
         </div>
     </div>
-    <div class="btn-register" id="loginButton" >
-        <div>
-            <img src="./images/rocket-icon.png" alt="">
-        </div>
-        <div>
-            <span class="white">Já possui uma conta?</span>
-            <span class="purple">Entre na plataforma</span>
-        </div>
-    </div>
-    
-    <!-- <script>
-        document.getElementById("loginButton").addEventListener("click", function() {
-            window.location.href = 'login.html';
-        });
-    </script> -->
-    
 </body>
 </html>
-
-
-<!-- Comentando forms antigo->
-<form method="POST">
-    {% csrf_token %}
-    <div class="form-header">
-        <div class="title">
-            <h1>Aluno</h1>
-        </div>
-        <div class="login-button">
-            <button><a href="../login">Entrar</a></button>
-        </div>
-    </div>
-
-    <div class="input-group">
-        <div class="input-box">
-            <label for="{{ form.nome.id_for_label }}">Primeiro Nome</label>
-             {{ form.nome }}
-        </div>
-
-        <div class="input-box">
-            <label for="{{ form.cpf.id_for_label }}">CPF</label>
-             {{ form.cpf }}
-        </div>
-
-        <div class="input-box">
-            <label for="{{ form.gmail.id_for_label }}">E-mail</label>
-            {{ form.gmail }}
-        </div>
-
-        <div class="input-box">
-            <label for=" {{ form.telefone.id_for_label }}">Celular</label>
-            {{ form.telefone }}
-        </div>
-
-        <div class="input-box">
-            <label for="{{ form.dataNascimento.id_for_label }}">Data Nascimento</label>
-            {{ form.dataNascimento }}
-        </div>
-
-        <div class="input-box">
-            <label for="{{ form.typeUser.id_for_label }}">O que você busca ser?</label>
-            {{ form.typeUser }}
-        </div>
-
-        <div class="input-box">
-            <label for=" {{ form.senha.id_for_label }}">Senha</label>
-            {{ form.senha }}
-        </div>
-
-         ACRESCENTAR VALIDAÇÃO DAS DUAS SENHAS 
-         <div class="input-box">
-            <label for="confirmPassword">Confirme sua Senha</label>
-            <input id="confirmPassword" type="password" name="confirmPassword"
-                placeholder="Digite sua senha novamente" required>
-        </div> 
-
-    </div>
-
-    <div class="continue-button">
-        <button type="submit" class="btn btn-primary">Cadastrar</button>
-    </div>
-    <div class=errors>
-        {% if messages %}
-                {% for message in messages %}
-                    <span >{{ message }}</span>
-                {% endfor %}
-        {% endif %}
-    </div>
-</form> -->
