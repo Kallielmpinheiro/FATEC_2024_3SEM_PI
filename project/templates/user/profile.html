@@ -20,7 +20,7 @@
 
             <div class="profile-detalhes">
                  <div class="intro">
-                    <h2>Anna</h2>
+                    <h2>{{ perfil.nome}}</h2>
                     <h4>Desenvolvedora Web</h4>
                     <div class="social">
                         <a href="#"><i class="fab fa-facebook" style="color:var(--blue)"></i></a>
@@ -35,10 +35,11 @@
                          <div class="icon">
                             <i class="fa fa-phone"  style="color:var(--light-purple)"></i>
                          </div>
-                         <div class="content">
-                            <span>Telefone</span>
-                            <h5>+55(19)999-6767</h5>
-                         </div>
+                        
+                           <div class="content">
+                              <span>Telefone</span>
+                              <h5>+55(19)999-6767</h5>
+                           </div>
                     </div>
 
                     <div class="row">
@@ -65,67 +66,26 @@
             
             </div>
        </div>
-
+       <a href="{% url 'user:mentorProfile' %}">PAPAI</a>
        <div class="sobre">
-           <h1>Sobre</h1>
-
-           <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad doloribus sed sunt cum molestiae. Exercitationem ad quia et obcaecati magnam ab at odio adipisci, dolores porro totam, eum facilis natus?
-          </p>
-
-          <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis velit est, accusamus magni consequatur beatae minima voluptate dignissimos excepturi, cumque eum aliquid saepe distinctio obcaecati provident optio, fugit architecto? Beatae.
-          </p>
-          <h2>Skills !!!</h2>
-          <div class="skill">
-             <div class="skillbox">
-                 <div class="icon">
-                    <img src="{% static '/img/ui.svg' %}" alt="">
+         <h1>Sobre</h1>
+         {% if perfil %}
+             <p>{{ perfil.sobre }}</p>
+             <h2>Skills !!!</h2>
+             {% for skill in habilidades %}
+                 <div class="skill">
+                     <div class="skillbox">
+                         <div class="desc">
+                             <h3>{{ skill }}</h3>
+                         </div>
+                     </div>
                  </div>
-                 <div class="desc">
-                    <h3>UI/UX Designer</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam euismod volutpat.</p>
-                 </div>
-                 <button class="sobre-btn" id="close-btn">
-                  <i class="fas fa-times"></i> Fechar
-
-             </div>
-
-             <div class="skillbox">
-                <div class="icon">
-                   <img src="{% static '/img/app.svg' %}" alt="">
-                </div>
-                <div class="desc">
-                   <h3>Desenvolvedor Mobile</h3>
-                   <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam euismod volutpat.</p>
-                </div>
-            </div>
-
-            <div class="skillbox">
-                <div class="icon">
-                   <img src="{% static '/img/api.svg' %}" alt="">
-                </div>
-                <div class="desc">
-                   <h3>Desenvolvedor API</h3>
-                   <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam euismod volutpat.</p>
-                </div>
-            </div>
-
-            <div class="skillbox">
-                <div class="icon">
-                   <img src="{% static '/img/web.svg' %}" alt="">
-                </div>
-                <div class="desc">
-                   <h3>Desenvolvedor Web</h3>
-                   <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam euismod volutpat.</p>
-                </div>
-            </div>
-          </div>
-       </div>
+             {% endfor %}
+             
+         {% else %}
+             <p>Perfil não encontrado.</p>
+         {% endif %}
+      </div>
    </div>
-   <script>
-      document.getElementById("close-btn").addEventListener("click", function() {
-          window.location.href = "dashboard.html";
-      });
-  </script>
 </body>
 </html>

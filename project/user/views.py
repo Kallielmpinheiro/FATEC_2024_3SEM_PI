@@ -9,6 +9,7 @@ from django.contrib.auth import logout
 from mongoengine import connect
 from database.db import connectMongoDB
 from mongoengine.queryset.visitor import Q
+from django.http import JsonResponse
 
 connectMongoDB()
 
@@ -193,6 +194,18 @@ def logoutView(request):
     messages.success(request, "Você foi desconectado com sucesso.")
     return redirect('user:user_login')
 
-def profileMentor(request,  cpf):
-    print(cpf)
-    return render(request, 'user/profile.html')
+def profileMentor(request,  id):
+    
+    profileMentor = Perfil.objects.filter(
+        iduser=id
+    ).first()
+    
+    print(profileMentor)
+    
+    habilidades = profileMentor.habilidades
+    print(habilidades)
+    logged_in_user = request.user
+    
+    
+    print(logged_in_user)
+    return render(request, 'user/profile.html', { "perfil": profileMentor, "habilidades": habilidades})
