@@ -1,7 +1,8 @@
 {% extends "user/dashboardBase.html" %}
 {% load static %}
-
 {% block content %}
+
+{% if user.typeUser == "Mentorado" %}
 <div class="container text-center mt-5">
     <h1>Mentores</h1>
     <ul class="list-group">
@@ -19,6 +20,8 @@
         {% endfor %}
     </ul>
 </div>
+{% endif %}
+
 
 <h1>Salas de Chat</h1>
 <ul>
@@ -51,4 +54,5 @@
         <li>Você não está relacionado a nenhuma sala.</li>
     {% endif %}
 </ul>
+
 {% endblock content %}

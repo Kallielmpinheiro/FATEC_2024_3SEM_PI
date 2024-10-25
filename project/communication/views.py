@@ -72,21 +72,23 @@ def chat(request, sala_id):
 
 @login_required
 def viewsChats(request):
+    typeuser = request.user.typeUser
     cpflogado = request.user.cpf
-
-    salas = Room.objects.filter(cpfMentorado=cpflogado)
-
-
-    salas_data = []
-    for sala in salas:
-        salas_data.append({
+    get_rooms = lambda user_type: Room.objects.filter(
+        cpfMentor=cpflogado) if user_type == 'Mentor' else Room.objects.filter(cpfMentorado=cpflogado)
+    salas = get_rooms(typeuser)
+    salas_data = [
+        {
             'salaId': sala.salaId,
             'cpfMentor': sala.cpfMentor,
             'cpfMentorado': sala.cpfMentorado,
             'mensagens': sala.mensagens[:2],
-        })
-    # return JsonResponse({'salas_abertas': salas_data})  
+        }
+        for sala in salas
+    ]
+    #return JsonResponse({'salas_abertas': salas_data})  
     return render(request, 'communication/dashboardChat.html', {'salas_abertas': salas_data})
+
 
 def entrar_na_sala(request, salaId):
     try:
