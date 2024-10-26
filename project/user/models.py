@@ -69,6 +69,7 @@ class Perfil(Document):
     redesSociais = DictField()
     horariosDisponiveis = ListField()
     nivelExperiencia = StringField(max_length=128)
+    areaAtuacao = StringField(max_length=128)
 
     def clean(self):
         if self.iduser is None:

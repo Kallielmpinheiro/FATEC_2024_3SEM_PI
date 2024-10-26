@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,81 +12,87 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
-   <div class="container">
-       <div class="profile-card"> 
+    <div class="container">
+        <div class="profile-card">
             <div class="profile-pic">
                 <img src="{% static '/img/avatar.webp' %}" alt="user avatar">
             </div>
-
             <div class="profile-detalhes">
-                 <div class="intro">
-                    <h2>{{ perfil.nome}}</h2>
-                    <h4>Desenvolvedora Web</h4>
+                <div class="intro">
+                    <h2>{{perfil.nome}}</h2>
+                    <h4>{{perfil.areaAtuacao}}</h4>
                     <div class="social">
-                        <a href="#"><i class="fab fa-facebook" style="color:var(--blue)"></i></a>
-                        <a href="#"><i class="fab fa-twitter"  style="color:var(--skyblue)"></i></a>
-                        <a href="#"><i class="fab fa-dribbble"  style="color:var(--dark-pink)"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"  style="color:var(--light-blue)"></i></a>
+                        <a href={{redesSociais.facebook}}><i class="fab fa-facebook" style="color:var(--blue)"></i></a>
+                        <a href={{redesSociais.github}}><i class="fab fa-twitter" style="color:var(--skyblue)"></i></a>
+                        <a href={{redesSociais.instagram}}><i class="fab fa-dribbble"
+                                style="color:var(--dark-pink)"></i></a>
+                        <a href={{redesSociais.linkedIn}}><i class="fab fa-linkedin"
+                                style="color:var(--light-blue)"></i></a>
                     </div>
-                 </div>
-
-                 <div class="contact-info">
-                    <div class="row">
-                         <div class="icon">
-                            <i class="fa fa-phone"  style="color:var(--light-purple)"></i>
-                         </div>
-                        
-                           <div class="content">
-                              <span>Telefone</span>
-                              <h5>+55(19)999-6767</h5>
-                           </div>
-                    </div>
-
+                </div>
+                <div class="contact-info">
                     <div class="row">
                         <div class="icon">
-                           <i class="fa fa-envelope-open"  style="color:var(--light-purple)"></i>
+                            <i class="fa fa-phone" style="color:var(--light-purple)"></i>
                         </div>
                         <div class="content">
-                           <span>Email</span>
-                           <h5>exemplo@gmail.com</h5>
+                            <span>Telefone</span>
+                            <h5>{{dados.telefone}}</h5>
                         </div>
-                   </div>
-    
-                   <div class="row">
-                    <div class="icon">
-                       <i class="fa fa-map-marker"  style="color:var(--light-purple)"></i>
                     </div>
-                    <div class="content">
-                       <span>País</span>
-                       <h5>Brasil</h5>
+                    <div class="row">
+                        <div class="icon">
+                            <i class="fa fa-envelope-open" style="color:var(--light-purple)"></i>
+                        </div>
+                        <div class="content">
+                            <span>Email</span>
+                            <h5>{{ dados.gmail }}</h5>
+                        </div>
                     </div>
-                 </div>
+
+                    
+                </div>
 
             </div>
-            
+        </div>
+        <div class="sobre">
+            <div>
+                <h1>Sobre</h1>
+                <p>
+                    {{ perfil.sobre }}
+                </p>
             </div>
-       </div>
-       <a href="{% url 'user:mentorProfile' %}">PAPAI</a>
-       <div class="sobre">
-         <h1>Sobre</h1>
-         {% if perfil %}
-             <p>{{ perfil.sobre }}</p>
-             <h2>Skills !!!</h2>
-             {% for skill in habilidades %}
-                 <div class="skill">
-                     <div class="skillbox">
-                         <div class="desc">
-                             <h3>{{ skill }}</h3>
-                         </div>
-                     </div>
-                 </div>
-             {% endfor %}
-             
-         {% else %}
-             <p>Perfil não encontrado.</p>
-         {% endif %}
-      </div>
-   </div>
+            <h2>Skills !!!</h2>
+          
+            
+            <div class="skill">
+
+                {%for habilidade in habilidades%}
+                <div class="skillbox">
+                    <div class="desc">
+                        <h3>{{habilidade }}</h3>
+
+                    </div>
+
+                </div>
+                {%endfor%}
+
+            </div>
+        </div>
+        <div>
+            <a class="sobre-btn" id="close-btn">
+                <i class="fas fa-times"></i> Agendar mentoria!</a>
+        </div>
+        
+        <div>
+            <a href="{% url 'user:mentorProfile' %}" class="sobre-btn" id="close-btn">
+                <i class="fas fa-times"></i> Fechar</a>
+        </div>
+
+    </div>
+
 </body>
+
 </html>

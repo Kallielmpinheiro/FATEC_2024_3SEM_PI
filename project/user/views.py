@@ -107,11 +107,12 @@ def dashboardConta(request):
 
         if formpefil.is_valid():
             perfil.nome = dados['nome']
+            perfil.areaAtuacao = dados['areaAtuacao']
             perfil.sobre = dados['sobre'] 
             perfil.nivelExperiencia = dados['nivelExperiencia']. capitalize()
             perfil.redesSociais = { 
                 'facebook': dados['facebook'], 
-                'x':dados['x'], 
+                'github':dados['github'], 
                 'instagram': dados['instagram'], 
                 'linkedIn': dados['linkedIn'] 
             }   
@@ -131,11 +132,12 @@ def dashboardConta(request):
     formPerfil = PerfilForm(
         initial={ 
             'nome': perfil.nome,
+            'areaAtuacao':  perfil.areaAtuacao ,
             'sobre': perfil.sobre, 
             'nivelExperiencia':   perfil.nivelExperiencia,
             'facebook':   perfil.redesSociais['facebook'] if 'facebook' in perfil.redesSociais else "", 
             'instagram':  perfil.redesSociais['instagram'] if 'instagram' in perfil.redesSociais else "" ,
-            'x': perfil.redesSociais['x'] if 'x' in perfil.redesSociais else "" ,
+            'github': perfil.redesSociais['github'] if 'github' in perfil.redesSociais else "" ,
             'linkedIn': perfil.redesSociais['linkedIn'] if 'linkedIn' in perfil.redesSociais else "",
             'habilidades': perfil.habilidades,
             'diasAtendimento':  perfil.horariosDisponiveis[1].get('atende') if len(perfil.horariosDisponiveis) > 0 else "" ,
@@ -200,12 +202,12 @@ def profileMentor(request,  id):
         iduser=id
     ).first()
     
-    print(profileMentor)
-    
     habilidades = profileMentor.habilidades
-    print(habilidades)
     logged_in_user = request.user
     
-    
-    print(logged_in_user)
-    return render(request, 'user/profile.html', { "perfil": profileMentor, "habilidades": habilidades})
+    print(profileMentor.redesSociais)
+    return render(request, 'user/profile.html', 
+    { 
+        "perfil": profileMentor, "habilidades": habilidades, 
+        "dados": logged_in_user, "redesSociais" :profileMentor.redesSociais 
+    })

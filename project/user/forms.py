@@ -28,7 +28,15 @@ class LoginForm(forms.Form):
     
     
 class PerfilForm(forms.Form): # MongoDB
+
+    
     nome = forms.CharField(
+        widget=forms.TextInput(
+            attrs={ "class": "form-control"}
+        )
+    )
+
+    areaAtuacao = forms.CharField(
         widget=forms.TextInput(
             attrs={ "class": "form-control"}
         )
@@ -53,9 +61,9 @@ class PerfilForm(forms.Form): # MongoDB
         label='Facebook', 
         widget=forms.TextInput(attrs={ "class": "form-control"})
     )
-    x = forms.CharField(
+    github = forms.CharField(
         max_length=255, 
-        label='X',  
+        label='Github',  
         widget=forms.TextInput(attrs={ "class": "form-control"})
     )
     instagram = forms.CharField(
