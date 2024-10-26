@@ -56,6 +56,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.cpf
 
+    class Meta:
+        unique_together = ["iduser","gmail","cpf"]
 
 class Perfil(Document):
     iduser = IntField(required=True, unique=True)
@@ -73,9 +75,16 @@ class Perfil(Document):
             raise ValidationError('O campo iduser não pode ser nulo.')
     
     def save(self, *args, **kwargs):
-        self.clean()
-        
         return super().save(*args, **kwargs)
 
     def __str__(self):
         return f"nome: {self.nome}, nivelExperiencia: {self.nivelExperiencia}, habilidades: {', '.join(self.habilidades)}"
+    
+    meta = {
+        'indexes':[
+            {
+                'fields':['iduser','cpf'],
+                'unique':True
+            }
+        ]
+    }

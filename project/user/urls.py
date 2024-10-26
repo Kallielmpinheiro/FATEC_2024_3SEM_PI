@@ -17,7 +17,7 @@ urlpatterns = [
     
     path('dashboard/', views.dashboard, name='dashboard'),
     path('dashboard/mentorprofile/', views.mentorProfile, name='mentorProfile'),
-    path('dashboard/profile/<str:cpf>', views.profileMentor, name='profile'),
+    path('dashboard/profile/<str:id>', views.profileMentor, name='profile'),
     path('dashboard/conta/', views.dashboardConta, name= 'dashboardConta'),
     path('dashboard/chat/',views.dashboardChat, name='dashboardChat'),
     path('dashboard/agendamentosemanal/',views.agendamentoSemanal, name='agendamentoSemanal'),
