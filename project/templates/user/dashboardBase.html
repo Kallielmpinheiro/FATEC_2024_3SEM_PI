@@ -378,10 +378,29 @@
                             <li><a href="{% url 'user:mentorProfile' %}" aria-expanded="false"><i   
                                         class="nav-icon ti ti-blackboard"></i><span
                                         class="nav-title">Mentorias</span></a> </li>
-                            <li>
+                                        <li class="nav-item">
+                                            <a class="nav-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                                <i class="nav-icon ti ti-calendar"></i>
+                                                <span class="nav-title">Chat</span>
+                                            </a>
+                                            <ul class="nav-submenu" aria-expanded="false">
+                                                {% if user.typeUser == "Mentorado" %}
+                                                    <li class="nav-subitem">
+                                                        <a href="{% url 'communication:ListarMentores' %}" class="nav-link">Iniciar Chat</a>
+                                                    </li>
+                                                    <li class="nav-subitem">
+                                                        <a href="{% url 'communication:viewsChats' %}" class="nav-link">Ver Chats</a>
+                                                    </li>
+                                                {% elif user.typeUser == "Mentor" %}
+                                                    <li class="nav-subitem">
+                                                        <a href="{% url 'communication:viewsChats' %}" class="nav-link">Ver Chats</a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                        
+                      
 
-                            <li><a href="{% url 'communication:ListarMentores' %}" aria-expanded="false"><i class="nav-icon ti ti-comment"></i><span
-                                        class="nav-title">Chat</span></a> </li>
                             <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false"><i
                                         class="nav-icon ti ti-calendar"></i><span
                                         class="nav-title">Agendamento</span></a>
