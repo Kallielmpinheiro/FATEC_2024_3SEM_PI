@@ -1,23 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@400;500&display=swap');
 :root {
-    --purple: rgb(130, 52, 233);
-    --gray: rgb(196,196,204);
-    --black: rgba(26,26,30);
-    --white: rgba(225, 225, 230);
+    --purple: #8e54e9;
+    --gray: #afb6c2;
+    --black: #191816;
+    --white: #afb6c2;
 }
-
-
 
 * {
     margin: 0;
     padding: 0;
-    font-family: "Roboto", sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
     line-height: inherit;
-    overflow: hidden;
+    overflow: hidden; /* Remove a rolagem do body */
 }
-
 
 .mt-7 {
     margin-top: 1.75rem;
@@ -29,7 +27,7 @@ body {
 
 .container {
     display: flex;
-    height: 100%;
+    min-height: 100vh; /* Garante que o contêiner ocupe pelo menos a altura da tela */
 }
 
 .container-left {
@@ -46,8 +44,8 @@ body {
 .container-right .grid {
     background-color: var(--black);
     padding: 5rem;
-    height: 100dvh;
-    overflow: auto;
+    overflow: auto; /* Permite rolagem dentro da grid se necessário */
+    max-height: 90vh; /* Defina uma altura máxima para a grid */
 }
 
 .container-right .logo img {
@@ -59,7 +57,7 @@ body {
 .container-right h1 {
     font-weight: 700;
     font-size: 1.5rem;
-    color: var(--gray);
+    color: #8e54e9;
     margin-top: 4rem;
     margin-bottom: 3rem;
 }
@@ -75,10 +73,11 @@ body {
 .input-field {
     display: flex;
     flex-direction: column;
+    background-color: ;
 }
 
 .input-field label {
-    color: var(--gray);
+    color: #868686;
     font-size: .87rem;
     line-height: 160%;
 }
@@ -129,9 +128,9 @@ body {
     padding: .75rem 2rem;
     background-color: var(--purple);
     border-style: none;
-    border-radius: .31rem;
+    border-radius: 4px;
     width: 100%;
-    color: #fff;
+    color: #afb6c2;
     cursor: pointer;
     margin: 30px 0;
 }
@@ -140,45 +139,7 @@ body {
     background-color: rgb(142, 77, 227);
 }
 
-.btn-github {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 30px;
-}
 
-.btn-github span {
-    color: var(--gray);
-    font-weight: 400;
-    flex: 1;
-}
-
-.btn-github button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 2;
-    font-weight: 400;
-    padding: .75rem 1.8rem;
-    background-color: rgb(41 41 46);
-    border-style: none;
-    border-radius: .31rem;
-    color: var(--white);
-    cursor: pointer;
-    margin: 30px 0;
-    font-size: 1rem;
-    transition: all .2s;
-}
-
-.btn-github button:hover {
-    background-color: rgb(59, 59, 66);
-}
-
-.btn-github button img {
-    width: 20px;
-    margin-right: 5px;
-}
 
 .btn-register {
     background-color: rgb(41 41 46);
@@ -188,7 +149,7 @@ body {
     justify-content: start;
     width: 100%;
     padding: 1.2rem 1.5rem;
-    border-radius: .5rem;
+    border-radius: 4px;
     font-size: 1rem;
     margin-top: 30px;
     cursor: pointer;
@@ -221,34 +182,12 @@ body {
     margin-right: 20px;
 }
 
-/* Para Chrome, Safari e outros navegadores baseados em WebKit */
-::-webkit-scrollbar {
-    width: 8px; /* Largura da barra de rolagem */
-    height: 8px; /* Altura da barra de rolagem horizontal */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Muda para coluna em telas pequenas */
+    }
+    .container-right {
+        max-width: 100%; /* Usa toda a largura disponível */
+        padding: 2rem; /* Reduz o padding */
+    }
 }
-
-::-webkit-scrollbar-thumb {
-    background-color: #888; /* Cor da parte arrastável (cinza) */
-    border-radius: 10px; /* Bordas arredondadas */
-}
-
-::-webkit-scrollbar-track {
-    background: #e0e0e0; /* Cor do fundo da barra de rolagem (cinza claro) */
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-    border: none;
-    -webkit-text-fill-color: var(--white) !important;
-  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
-  transition: background-color 5000s ease-in-out 0s;
-}
-
-
