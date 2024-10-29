@@ -8,16 +8,17 @@
     <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    
+    <link rel="icon" type="image/x-icon" href="{% static '/img/favicon.png' %}" />
 </head>
 <body>
     <div class="container">
-        <div class="container-left" style="background-image: url({% static '/img/tela.png' %});">
+        <div class="container-left" style="background-image: url({% static '/img/tela.png' %})">
         </div>
         <div class="container-right">
             <div class="grid">
-                <div class="logo">
-                    <img src="{% static 'img/logo.png' %}" alt="InovaDev logo">
+                <div class="logo" >
+                    <img src="{% static 'img/logo.png' %}" alt="InovaDev logo" >
                 </div>
                 <h1 style="margin: 20px 0 ">Cadastre-se gratuitamente</h1>
                 <form method="POST">
@@ -64,7 +65,9 @@
                         <label for="{{ form.senha.typeUser }}" class="mt-7">O que você ser?</label>
                         {{ form.typeUser }}
                     </div>
-                    <button class="btn-login">Cadastrar-se gratuitamente</button>
+                    <button class="btn-login">Cadastrar-se</button>
+                    
+                
                 </form>
             </div>
         </div>

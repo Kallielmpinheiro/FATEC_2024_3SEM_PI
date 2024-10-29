@@ -22,9 +22,25 @@ class UserForm(forms.ModelForm):
 
    
         
+from django import forms
+
 class LoginForm(forms.Form):
-    cpf = forms.CharField(max_length=11, label="CPF")
-    senha = forms.CharField(widget=forms.PasswordInput, label="Senha")
+    cpf = forms.CharField(
+        max_length=11, 
+        label="CPF", 
+        widget=forms.TextInput(attrs={
+            'class': 'input',  
+            'placeholder': 'Digite seu CPF'  
+        })
+    )
+    senha = forms.CharField(
+        label="Senha",
+        widget=forms.PasswordInput(attrs={
+            'class': 'input',  
+            'placeholder': 'Digite sua senha'  
+        })
+    )
+
     
     
 class PerfilForm(forms.Form): # MongoDB
