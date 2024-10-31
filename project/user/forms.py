@@ -53,6 +53,7 @@ class PerfilForm(forms.Form): # MongoDB
     )
 
     areaAtuacao = forms.CharField(
+        label='Área de Atuação', 
         widget=forms.TextInput(
             attrs={ "class": "form-control"}
         )
@@ -63,7 +64,8 @@ class PerfilForm(forms.Form): # MongoDB
             attrs={"rows":"5", "class": "form-control "}
         )
     )
-    nivelExperiencia = forms.ChoiceField( 
+    nivelExperiencia = forms.ChoiceField(
+        label='Nível de Experiência',
         choices= [
                 ('junior', 'Junior'), 
                 ('pleno', 'Pleno'), 

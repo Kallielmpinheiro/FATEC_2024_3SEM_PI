@@ -115,6 +115,7 @@ class DashboardContaView(LoginRequiredMixin, FormView):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
         context['perfil'] = PerfilService.get_perfil_by_user_id(self.request.user.iduser)
+        context['formPerfil'] = context['form']
         return context
 
     def form_valid(self, form):
