@@ -155,6 +155,8 @@
                                                 {{ formPerfil.habilidades}}
                                             </div>
 
+                                            
+
                                             <div class="form-group col-md-12">
                                                 <label for="fb">{{ formPerfil.diasAtendimento.label}}</label>
                                                 {{ formPerfil.diasAtendimento}}
@@ -183,5 +185,12 @@
     </div>
     <!--mail-Compose-contant-end-->
 </div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
+<script>
+    new MultiSelectTag('skills')  // id
+    new MultiSelectTag('diasSemana')
+</script>
 
 {% endblock content %}

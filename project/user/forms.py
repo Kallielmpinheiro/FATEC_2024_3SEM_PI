@@ -143,11 +143,9 @@ class PerfilForm(forms.Form): # MongoDB
 
     habilidades = forms.MultipleChoiceField(
         choices=SKILLS_CHOICES,
-        widget=forms.CheckboxSelectMultiple(
-            attrs={"class":"containerSelect"}
-        ),
-        label='Habilidades de Programação',
-        required=False
+        widget=forms.SelectMultiple(
+            attrs={"id": "skills"}
+        ), required=False
     )
 
 
@@ -162,8 +160,8 @@ class PerfilForm(forms.Form): # MongoDB
             ( 7, 'Sabado'),
                   
         ],
-        widget=forms.CheckboxSelectMultiple(
-            attrs={"class":"containerSelect"}
+        widget=forms.SelectMultiple(
+            attrs={"class":"containerSelect", "id": "diasSemana"}
         ),
         label='Dias Disponível',
         required=False
