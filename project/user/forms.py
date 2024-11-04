@@ -168,7 +168,7 @@ class PerfilForm(forms.Form): # MongoDB
     )
  
     horaInicio = forms.TimeField(
-        label="Hora inicial de Mentorias",
+        label="Hora Inicial de Mentorias",
         widget=forms.TimeInput(
             format="%H:%M",
             attrs= {
@@ -179,7 +179,7 @@ class PerfilForm(forms.Form): # MongoDB
     )
 
     horaFinal = forms.TimeField(
-        label="Hora final de Mentorias",
+        label="Hora Final de Mentorias",
         widget=forms.TimeInput(
             format="%H:%M",
             attrs= {

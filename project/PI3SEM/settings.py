@@ -101,7 +101,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'PI3SEM',
         'USER': 'postgres',
-        'PASSWORD': '123',
+        'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': '5432',
     },
