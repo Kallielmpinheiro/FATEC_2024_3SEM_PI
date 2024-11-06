@@ -1,98 +1,117 @@
-<!DOCTYPE html>
+<!-- Portfólio -->
+{% extends "user/dashboardBase.html" %}
 {% load static %}
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}">
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-
-<body>
-    <div class="container">
-        <div class="profile-card">
-            <div class="profile-pic">
-                <img src="{% static '/img/avatar.webp' %}" alt="user avatar">
-            </div>
-            <div class="profile-detalhes">
-                <div class="intro">
-                    <h2>{{perfil.nome}}</h2>
-                    <h4>{{perfil.areaAtuacao}}</h4>
-                    <div class="social">
-                        <a href={{redesSociais.facebook}}><i class="fab fa-facebook" style="color:var(--blue)"></i></a>
-                        <a href={{redesSociais.github}}><i class="fab fa-twitter" style="color:var(--skyblue)"></i></a>
-                        <a href={{redesSociais.instagram}}><i class="fab fa-dribbble"
-                                style="color:var(--dark-pink)"></i></a>
-                        <a href={{redesSociais.linkedIn}}><i class="fab fa-linkedin"
-                                style="color:var(--light-blue)"></i></a>
-                    </div>
-                </div>
-                <div class="contact-info">
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-0">
                     <div class="row">
-                        <div class="icon">
-                            <i class="fa fa-phone" style="color:var(--light-purple)"></i>
-                        </div>
-                        <div class="content">
-                            <span>Telefone</span>
-                            <h5>{{dados.telefone}}</h5>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="icon">
-                            <i class="fa fa-envelope-open" style="color:var(--light-purple)"></i>
-                        </div>
-                        <div class="content">
-                            <span>Email</span>
-                            <h5>{{ dados.gmail }}</h5>
-                        </div>
-                    </div>
+                        <!-- Left Profile Info Section -->
+                        <div class="col-lg-4 col-xl-3">
+                            <div class="profile-content-left pt-5 pb-3 px-3 px-xl-5">
+                                <div class="profile-img text-center rounded-circle">
+                                    <div class="pt-5">
+                                        <div class="bg-img m-auto">
+                                            <img src="{% static 'img/user.png' %}" class="img-fluid"
+                                                 alt="users-avatar">
+                                        </div>
+                                        <div class="profile pt-4">
+                                            <h4 class="mb-1">{{  user.nome }} </h4>
+                                            <p>{{  perfil.nivelExperiencia }} </p>
+                                        </div>
+                                    </div>
+                                </div>
 
-                    
+                                <hr class="w-100">
+                                <div class="contact-info pt-4">
+                                    <h5 class="text-dark mb-1">Informações de Contato</h5>
+                                    <p class="text-dark font-weight-medium pt-4 mb-2">Email</p>
+                                    <p>{{ user.gmail }}</p>
+                                    <p class="text-dark font-weight-medium pt-4 mb-2">Telefone</p>
+                                    <p>{{ user.phone|default:"Não informado" }}</p>
+                                    <p class="text-dark font-weight-medium pt-4 mb-2">Área de Atuação</p>
+                                    <p>{{ user.area|default:"Não informada" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Right Profile Info Section -->
+                        <div class="col-lg-8 col-xl-9">
+                            <div class="profile-content-right py-5">
+                                <ul class="nav nav-tabs px-3 px-xl-5 nav-style-border" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#profile" role="tab">Perfil</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Configurações</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content px-3 px-xl-5">
+                                    <!-- Profile Tab -->
+                                    <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                                        <div class="mt-5">
+                                            <h5 class="text-dark mb-4">Sobre</h5>
+                                            <p>{{ user.bio|default:"Nenhuma informação disponível." }}</p>
+                                        </div>
+                                        <div class="mt-5">
+                                            <h5 class="text-dark mb-4">Experiência</h5>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    {{ user.experience|default:"Nenhuma experiência cadastrada." }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Settings Tab -->
+                                    <div class="tab-pane fade" id="settings" role="tabpanel">
+                                        <div class="mt-5">
+                                            <form method="POST" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <div class="row mb-2">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="nome">Nome</label>
+                                                            <input type="text" class="form-control" id="nome" name="nome" value="{{ user.nome }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="email">Email</label>
+                                                            <input type="email" class="form-control" id="email" name="email" value="{{ user.gmail }}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mb-4">
+                                                    <label for="bio">Biografia</label>
+                                                    <textarea class="form-control" id="bio" name="bio" rows="3">{{ user.bio }}</textarea>
+                                                </div>
+                                                <div class="form-group mb-4">
+                                                    <label for="experience">Experiência</label>
+                                                    <textarea class="form-control" id="experience" name="experience" rows="3">{{ user.experience }}</textarea>
+                                                </div>
+                                                <div class="form-group mb-4">
+                                                    <label for="phone">Telefone</label>
+                                                    <input type="text" class="form-control" id="phone" name="phone" value="{{ user.phone }}">
+                                                </div>
+                                                <div class="form-group mb-4">
+                                                    <label for="area">Área de Atuação</label>
+                                                    <input type="text" class="form-control" id="area" name="area" value="{{ user.area }}">
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
-        <div class="sobre">
-            <div>
-                <h1>Sobre</h1>
-                <p>
-                    {{ perfil.sobre }}
-                </p>
-            </div>
-            <h2>Skills !!!</h2>
-          
-            
-            <div class="skill">
-
-                {%for habilidade in habilidades%}
-                <div class="skillbox">
-                    <div class="desc">
-                        <h3>{{habilidade }}</h3>
-
-                    </div>
-
-                </div>
-                {%endfor%}
-
-            </div>
-        </div>
-        <div>
-            <a class="sobre-btn" id="close-btn">
-                <i class="fas fa-times"></i> Agendar mentoria!</a>
-        </div>
-        
-        <div>
-            <a href="{% url 'user:mentorProfile' %}" class="sobre-btn" id="close-btn">
-                <i class="fas fa-times"></i> Fechar</a>
-        </div>
-
     </div>
+</div>
 
-</body>
 
-</html>
+{% endblock content %}
