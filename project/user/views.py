@@ -59,9 +59,9 @@ class UserRegistrationView(FormView):
                 'nivelExperiencia': '',
                 'certificacoes': [],
                 'habilidades': [],
-                'redesSociais': {}
+                'redesSociais': {},
+                'typeUser': user.typeUser
             }
-            
             
             PerfilService.create_perfil(perfil_data)
 
@@ -157,6 +157,7 @@ class MentorProfileListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
+        context[ 'typeUser'] = self.request.user.typeUser
         return context
 
     def get_queryset(self):
@@ -164,20 +165,44 @@ class MentorProfileListView(LoginRequiredMixin, ListView):
         if search_query:
             return PerfilService.search_perfis_by_name(search_query)
         return PerfilService.get_all_perfis()
-
+    
+    
+    
 class MentorProfileDetailView(LoginRequiredMixin, DetailView):
     template_name = 'user/profile.html'
     context_object_name = 'perfil'
+
+    
 
     def get_object(self):
         iduser = self.kwargs.get('id')
         return PerfilService.get_perfil_by_user_id(iduser)
 
     def get_context_data(self, **kwargs):
+
+        dias_semana = {
+            '1': 'Domingo',
+            '2': 'Segunda-feira',
+            '3': 'Terça-feira',
+            '4': 'Quarta-feira',
+            '5': 'Quinta-feira',
+            '6': 'Sexta-feira',
+            '7': 'Sábado-feira'
+        }
         context = super().get_context_data(**kwargs)
         context['habilidades'] = self.object.habilidades
         context['redesSociais'] = self.object.redesSociais
+        context['horarios'] = self.object.horariosDisponiveis[0]  if self.object.horariosDisponiveis else '' 
         context['dados'] = self.request.user
+        context['diasAtendimento'] = list(
+            map(
+                lambda dia: 
+                    dias_semana.get(dia, "Dia Inválido"), 
+                    self.object.horariosDisponiveis[1]['atende'] if self.object.horariosDisponiveis else '' 
+            )
+        )
+        print(context)
+     
         return context
 
 class DashboardChatView(LoginRequiredMixin, TemplateView):

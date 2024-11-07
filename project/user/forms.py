@@ -1,6 +1,7 @@
 from django import forms
 from .models import User, Perfil
 from django.forms import PasswordInput
+from datetime import time, timedelta
 
 class UserForm(forms.ModelForm):
     senha = forms.CharField(widget=PasswordInput(), max_length=128)
@@ -49,20 +50,20 @@ class PerfilForm(forms.Form): # MongoDB
     nome = forms.CharField(
         widget=forms.TextInput(
             attrs={ "class": "form-control"}
-        )
+        ), required=False
     )
 
     areaAtuacao = forms.CharField(
         label='Área de Atuação', 
         widget=forms.TextInput(
             attrs={ "class": "form-control"}
-        )
+        ), required=False
     )
     sobre = forms.CharField(
         max_length=255, label='Sobre', 
         widget=forms.Textarea(
             attrs={"rows":"5", "class": "form-control "}
-        )
+        ), required=False
     )
     nivelExperiencia = forms.ChoiceField(
         label='Nível de Experiência',
@@ -71,28 +72,33 @@ class PerfilForm(forms.Form): # MongoDB
                 ('pleno', 'Pleno'), 
                 ( 'senior', 'Sênior')
         ],
-        widget= forms.Select(attrs={ "class": "form-control"})
+        widget= forms.Select(attrs={ "class": "form-control"}), 
+        required=False
     )
     
     facebook = forms.CharField(
         max_length=255, 
         label='Facebook', 
         widget=forms.TextInput(attrs={ "class": "form-control"})
+        , required=False
     )
     github = forms.CharField(
         max_length=255, 
         label='Github',  
         widget=forms.TextInput(attrs={ "class": "form-control"})
+        , required=False
     )
     instagram = forms.CharField(
         max_length=255, 
         label='Instragram',  
         widget=forms.TextInput(attrs={ "class": "form-control"})
+        , required=False
     )
     linkedIn = forms.CharField(
         max_length=255, 
         label='LinkedIn',  
         widget=forms.TextInput(attrs={ "class": "form-control"})
+        , required=False
     )
 
     SKILLS_CHOICES = [
@@ -167,10 +173,23 @@ class PerfilForm(forms.Form): # MongoDB
         required=False
     )
  
-    horaInicio = forms.TimeField(
-        label="Hora Inicial de Mentorias",
-        widget=forms.TimeInput(
-            format="%H:%M",
+    TIME_CHOICES = [(time(hour, minute).strftime('%H:%M'), time(hour, minute).strftime('%H:%M'))
+                    for hour in range(0, 24) for minute in [0, 30]]
+
+    horaInicio =  forms.ChoiceField(
+        choices=TIME_CHOICES, 
+        label="Hora Inicial de Mentoriass", 
+        widget=forms.Select(
+            attrs= {
+                "type": "time",
+                "class": "form-control" 
+            }
+        )
+    )
+    horaFinal =  forms.ChoiceField(
+        choices=TIME_CHOICES, 
+        label="Hora Final de Mentorias", 
+        widget=forms.Select(
             attrs= {
                 "type": "time",
                 "class": "form-control" 
@@ -178,15 +197,6 @@ class PerfilForm(forms.Form): # MongoDB
         )
     )
 
-    horaFinal = forms.TimeField(
-        label="Hora Final de Mentorias",
-        widget=forms.TimeInput(
-            format="%H:%M",
-            attrs= {
-                "type": "time",
-                "class": "form-control" 
-            }
-        )
-    )
+   
 
 

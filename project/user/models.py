@@ -54,7 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.cpf
+        return f"id:{self.iduser}, nome: {self.nome}, cpf: {self.cpf}, gmail: {self.gmail}, telefon: {self.telefone}, dataNasc: {self.dataNascimento}, typeUser: {self.typeUser}"
 
     class Meta:
         unique_together = ["iduser","gmail","cpf"]
@@ -70,6 +70,7 @@ class Perfil(Document):
     horariosDisponiveis = ListField()
     nivelExperiencia = StringField(max_length=128)
     areaAtuacao = StringField(max_length=128)
+    typeUser = StringField(max_length=255)
 
     def clean(self):
         if self.iduser is None:
@@ -79,7 +80,7 @@ class Perfil(Document):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"nome: {self.nome}, nivelExperiencia: {self.nivelExperiencia}, habilidades: {', '.join(self.habilidades)}"
+        return f"id:{self.iduser}, nome: {self.nome}, nivelExperiencia: {self.nivelExperiencia}, habilidades: {', '.join(self.habilidades)}"
     
     meta = {
         'indexes':[
