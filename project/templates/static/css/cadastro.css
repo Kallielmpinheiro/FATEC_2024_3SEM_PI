@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@400;500&display=swap');
+
 :root {
     --purple: #8e54e9;
     --gray: #afb6c2;
@@ -14,7 +15,8 @@
 
 body {
     line-height: inherit;
-    overflow: hidden; /* Remove a rolagem do body */
+    overflow: hidden;
+    /* Remove a rolagem do body */
 }
 
 .mt-7 {
@@ -27,7 +29,8 @@ body {
 
 .container {
     display: flex;
-    min-height: 100vh; /* Garante que o contêiner ocupe pelo menos a altura da tela */
+    min-height: 100vh;
+    /* Garante que o contêiner ocupe pelo menos a altura da tela */
 }
 
 .container-left {
@@ -44,8 +47,10 @@ body {
 .container-right .grid {
     background-color: var(--black);
     padding: 5rem;
-    overflow: auto; /* Permite rolagem dentro da grid se necessário */
-    max-height: 90vh; /* Defina uma altura máxima para a grid */
+    overflow: auto;
+    /* Permite rolagem dentro da grid se necessário */
+    max-height: 90vh;
+    /* Defina uma altura máxima para a grid */
 }
 
 .container-right .logo img {
@@ -67,7 +72,7 @@ body {
     display: block;
     width: 100%;
     height: 2px;
-    background-color: rgb(41,41,46);
+    background-color: rgb(41, 41, 46);
 }
 
 .input-field {
@@ -85,7 +90,7 @@ body {
 .input-field .input-square {
     padding: .75rem 1rem;
     background-color: transparent;
-    border: solid 1px rgb(41,41,46);
+    border: solid 1px rgb(41, 41, 46);
     border-radius: .30rem;
     display: flex;
     justify-content: center;
@@ -96,7 +101,7 @@ body {
 }
 
 .input-field .input-square:focus-within {
-    border-color: var(--purple); 
+    border-color: var(--purple);
 }
 
 .input-field .input-square input {
@@ -184,10 +189,27 @@ body {
 
 @media (max-width: 768px) {
     .container {
-        flex-direction: column; /* Muda para coluna em telas pequenas */
+        flex-direction: column;
+        /* Muda para coluna em telas pequenas */
     }
+
     .container-right {
-        max-width: 100%; /* Usa toda a largura disponível */
-        padding: 2rem; /* Reduz o padding */
+        max-width: 100%;
+        /* Usa toda a largura disponível */
+        padding: 2rem;
+        /* Reduz o padding */
     }
+}
+
+
+.errorlist {
+    li {
+        list-style: none;
+    }
+
+    text-decoration: none;
+    color: #868686;
+    font-size: 12px;
+    margin-top: 10px;
+    margin-left: 5px;
 }

@@ -306,3 +306,9 @@ label {
 
 }
 
+.errorlist {
+   color: #868686;
+   font-size: 12px;
+   margin-top: 10px;
+   margin-left: 5px;
+}

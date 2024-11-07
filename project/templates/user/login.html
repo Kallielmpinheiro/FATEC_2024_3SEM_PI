@@ -1,99 +1,130 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login / InovaDev</title>
-    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
-    <link rel="icon" type="image/x-icon" href="{% static '/img/favicon.png' %}" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="login-text">
-        <div class="log">
-          <i class="door">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H15" stroke="#8e54e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M10 17L15 12L10 7" stroke="#8e54e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M15 12H3" stroke="#8e54e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </i>
-          <h1>Faça seu login</h1>
-        </div>
 
-        <div class="info">
-          <p>Entre com suas informações de cadastro.</p>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login / InovaDev</title>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+  <link rel="icon" type="image/x-icon" href="{% static '/img/favicon.png' %}" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="login-text">
+      <div class="log">
+        <i class="door">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M15 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H15"
+              stroke="#8e54e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M10 17L15 12L10 7" stroke="#8e54e9" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M15 12H3" stroke="#8e54e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </i>
+        <h1>Faça seu login</h1>
       </div>
 
-      <form method="POST"  class="form">
-        {% csrf_token %}
-        <div class="cpf">
-          <label for="id_cpf">CPF</label>
-          {{ form.cpf }}
-          <i id="cpf-icon" class="cpf-icon stroke">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path id="cpf-path" d="M3.33329 3.33331H16.6666C17.5833 3.33331 18.3333 4.08331 18.3333 4.99998V15C18.3333 15.9166 17.5833 16.6666 16.6666 16.6666H3.33329C2.41663 16.6666 1.66663 15.9166 1.66663 15V4.99998C1.66663 4.08331 2.41663 3.33331 3.33329 3.33331Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path id="cpf-path-2" d="M18.3333 5L9.99996 10.8333L1.66663 5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </i>
-        </div>
-
-        <div class="password">
-          <label for="id_senha">Senha</label>
-          {{ form.senha }}
-          <i id="lock-icon" class="lock-icon">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path id="lock-path" d="M15.8333 9.16669H4.16667C3.24619 9.16669 2.5 9.91288 2.5 10.8334V16.6667C2.5 17.5872 3.24619 18.3334 4.16667 18.3334H15.8333C16.7538 18.3334 17.5 17.5872 17.5 16.6667V10.8334C17.5 9.91288 16.7538 9.16669 15.8333 9.16669Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path id="lock-path-2" d="M5.83337 9.16669V5.83335C5.83337 4.72828 6.27236 3.66848 7.05376 2.88708C7.83516 2.10567 8.89497 1.66669 10 1.66669C11.1051 1.66669 12.1649 2.10567 12.9463 2.88708C13.7277 3.66848 14.1667 4.72828 14.1667 5.83335V9.16669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </i>
-          <i onclick="openEye()" id="eye-icon" class="eye-icon">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g clip-path="url(#clip0_222_89)">
-                <path id="eye-path" d="M0.833374 9.99998C0.833374 9.99998 4.16671 3.33331 10 3.33331C15.8334 3.33331 19.1667 9.99998 19.1667 9.99998C19.1667 9.99998 15.8334 16.6666 10 16.6666C4.16671 16.6666 0.833374 9.99998 0.833374 9.99998Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path id="eye-path-2" d="M10 12.5C11.3807 12.5 12.5 11.3807 12.5 10C12.5 8.61929 11.3807 7.5 10 7.5C8.61929 7.5 7.5 8.61929 7.5 10C7.5 11.3807 8.61929 12.5 10 12.5Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </g>
-              <defs>
-                <clipPath id="clip0_222_89">
-                  <rect width="20" height="20" fill="white"/>
-                </clipPath>
-              </defs>
-            </svg>
-          </i>
-        </div>
-
-        <div class="box">
-            <div class="check">
-              <button onclick=" showButton()" id="checkbox" class="checkbox">
-                <i id="check-icon">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="#473404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </i>
-              </button>
-              <p>Lembre-me</p>
-            </div>
-            <a href="#">Esqueci minha senha</a>
-          </div>
-    
-          <div class="buttons">
-            <button class="button" type="submit" >Entrar</button>
-            
-            <a href="{% url 'user:cadastro' %}"><span>Não tem uma conta?</span> Registre-se</a>
-          </div>
-          
-      </form>
-
-      
+      <div class="info">
+        <p>Entre com suas informações de cadastro.</p>
+      </div>
     </div>
 
-    <div class="banner">
-      <img src="{% static '/img/tela.png' %}" alt="">
-    </div>
+    <form method="POST" class="form">
+      {% csrf_token %}
+      <div class="cpf">
+        <label for="id_cpf">CPF</label>
+        {{ form.cpf }}
+        <i id="cpf-icon" class="cpf-icon stroke">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path id="cpf-path"
+              d="M3.33329 3.33331H16.6666C17.5833 3.33331 18.3333 4.08331 18.3333 4.99998V15C18.3333 15.9166 17.5833 16.6666 16.6666 16.6666H3.33329C2.41663 16.6666 1.66663 15.9166 1.66663 15V4.99998C1.66663 4.08331 2.41663 3.33331 3.33329 3.33331Z"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path id="cpf-path-2" d="M18.3333 5L9.99996 10.8333L1.66663 5" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </i>
+      </div>
 
-    <script src="{% static 'js/login.js' %}"></script>
-  </body>
+      <div class="password">
+        <label for="id_senha">Senha</label>
+        {{ form.senha }}
+
+        
+
+        <i id="lock-icon" class="lock-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path id="lock-path"
+              d="M15.8333 9.16669H4.16667C3.24619 9.16669 2.5 9.91288 2.5 10.8334V16.6667C2.5 17.5872 3.24619 18.3334 4.16667 18.3334H15.8333C16.7538 18.3334 17.5 17.5872 17.5 16.6667V10.8334C17.5 9.91288 16.7538 9.16669 15.8333 9.16669Z"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path id="lock-path-2"
+              d="M5.83337 9.16669V5.83335C5.83337 4.72828 6.27236 3.66848 7.05376 2.88708C7.83516 2.10567 8.89497 1.66669 10 1.66669C11.1051 1.66669 12.1649 2.10567 12.9463 2.88708C13.7277 3.66848 14.1667 4.72828 14.1667 5.83335V9.16669"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </i>
+        <i onclick="openEye()" id="eye-icon" class="eye-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_222_89)">
+              <path id="eye-path"
+                d="M0.833374 9.99998C0.833374 9.99998 4.16671 3.33331 10 3.33331C15.8334 3.33331 19.1667 9.99998 19.1667 9.99998C19.1667 9.99998 15.8334 16.6666 10 16.6666C4.16671 16.6666 0.833374 9.99998 0.833374 9.99998Z"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path id="eye-path-2"
+                d="M10 12.5C11.3807 12.5 12.5 11.3807 12.5 10C12.5 8.61929 11.3807 7.5 10 7.5C8.61929 7.5 7.5 8.61929 7.5 10C7.5 11.3807 8.61929 12.5 10 12.5Z"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+            <defs>
+              <clipPath id="clip0_222_89">
+                <rect width="20" height="20" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+        </i>
+      </div>
+
+      {% if messages %}
+        {% for message in messages %}
+          {% if forloop.last %}
+            {% if message.tags == "error" %}
+              <p class="errorlist">{{ message }}</p>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      <div class="box">
+        <div class="check">
+          <button onclick=" showButton()" id="checkbox" class="checkbox">
+            <i id="check-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="#473404" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </i>
+          </button>
+          <p>Lembre-me</p>
+        </div>
+        <a href="#">Esqueci minha senha</a>
+      </div>
+
+      <div class="buttons">
+        <button class="button" type="submit">Entrar</button>
+
+        <a href="{% url 'user:cadastro' %}"><span>Não tem uma conta?</span> Registre-se</a>
+      </div>
+
+    </form>
+
+
+  </div>
+
+  <div class="banner">
+    <img src="{% static '/img/tela.png' %}" alt="">
+  </div>
+
+  <script src="{% static 'js/login.js' %}"></script>
+</body>
+
 </html>

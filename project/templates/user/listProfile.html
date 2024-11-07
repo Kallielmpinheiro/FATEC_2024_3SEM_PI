@@ -17,7 +17,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{% url 'user:dashboard' %}"><i class="ti ti-home"></i></a>
                             </li>
-                            
+
                             <li class="breadcrumb-item active text-primary" aria-current="page">
                                 Mentoria</li>
                         </ol>
@@ -37,7 +37,7 @@
                         <div class="card-heading">
                             <h4 class="card-title"></h4>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="card-body py-0 table-responsive">
@@ -46,47 +46,78 @@
                             <tr>
                                 <th scope="col">Nome</th>
                                 <th scope="col">Experiencia</th>
-                                
-                                <th scope="col">Ver Profile</th>
+                                <th scope="col">Área de Atuação</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Visualizar Perfil</th>
+                                <th scope="col">Iniciar Chat</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             {% if perfis %}
                                 {% for perfil in perfis %}
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="bg-img mr-4">
-                                                    <!-- <img src="assets/img/avtar/01.jpg" class="img-fluid"
-                                                        alt="Clients-01"> -->
+                                    <!-- Mentor visualiza todos -->
+                                    {% if  user.typeUser == 'Mentor'  %}
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+            
+                                                    <p class="font-weight-bold">{{ perfil.nome}} </p>
                                                 </div>
-                                                <p class="font-weight-bold">{{ perfil.nome}} </p>
-                                            </div>
-                                        </td>
-                                        <td>{{ perfil.nivelExperiencia}}</td>
-                                        <td>{{ perfil.areaAtuacao}}</td>
-                                        
-                                        <td>
-
-                                            <a href= "{% url 'user:profile' id=perfil.iduser %}"
-                                                class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0 "><i
-                                                    class="ti ti-id-badge"></i></a>
-                                            
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td>{{ perfil.nivelExperiencia |default:"Não informado" }}</td>
+                                            <td>{{ perfil.areaAtuacao | default:"Não informado"}}</td>
+                                            <td>{{ perfil.typeUser | default:"Não informado"}}</td>
+            
+                                            <td>
+                                                <a href="{% url 'user:profile' id=perfil.iduser %}"
+                                                    class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0 "><i
+                                                        class="ti ti-id-badge"></i></a>
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}"
+                                                    class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0 "><i
+                                                        class="ti ti-id-badge"></i></a>
+                                            </td>
+                                        </tr>                                        
+                                    {% endif %}
+                                    <!-- Mentora visualiza apenas mentor -->
+                                    {% if  user.typeUser == 'Mentorado' and perfil.typeUser == 'Mentor'  %}
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+            
+                                                    <p class="font-weight-bold">{{ perfil.nome}} </p>
+                                                </div>
+                                            </td>
+                                            <td>{{ perfil.nivelExperiencia |default:"Não informado" }}</td>
+                                            <td>{{ perfil.areaAtuacao | default:"Não informado"}}</td>
+                                            <td>{{ perfil.typeUser | default:"Não informado"}}</td>
+            
+                                            <td>
+                                                <a href="{% url 'user:profile' id=perfil.iduser %}"
+                                                    class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0 "><i
+                                                        class="ti ti-id-badge"></i></a>
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}"
+                                                    class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0 "><i
+                                                        class="ti ti-id-badge"></i></a>
+                                            </td>
+                                        </tr>                                        
+                                    {% endif %}
                                 {% endfor %}
-                                {% else %}
-                                    <tr>
-                                        <td colspan="5">Nenhum perfil encontrado.</td>
-                                    </tr>
-                                {% endif %}
-                            
+                            {% else %}
+                            <tr>
+                                <td colspan="5">Nenhum perfil encontrado.</td>
+                            </tr>
+                            {% endif %}
+
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    <!-- end-mentor contant-->
 </div>
 {% endblock content %}
