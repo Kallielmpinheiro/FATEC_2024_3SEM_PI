@@ -178,7 +178,7 @@ class PerfilForm(forms.Form): # MongoDB
 
     horaInicio =  forms.ChoiceField(
         choices=TIME_CHOICES, 
-        label="Hora Inicial de Mentoriass", 
+        label="Hora Inicial", 
         widget=forms.Select(
             attrs= {
                 "type": "time",
@@ -188,7 +188,7 @@ class PerfilForm(forms.Form): # MongoDB
     )
     horaFinal =  forms.ChoiceField(
         choices=TIME_CHOICES, 
-        label="Hora Final de Mentorias", 
+        label="Hora Final", 
         widget=forms.Select(
             attrs= {
                 "type": "time",

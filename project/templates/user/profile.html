@@ -44,7 +44,12 @@
                                         <a class="nav-link active" data-toggle="tab" href="#profile"
                                             role="tab">Perfil</a>
                                     </li>
-
+                                    <li class="nav-item">
+                                        <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}" class="nav-link">Iniciar Chat</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#agendar-mentoria" role="tab">Agendar Mentoria</a>
+                                    </li>
                                 </ul>
                                 <div class="tab-content px-3 px-xl-5">
                                     <!-- Profile Tab -->
@@ -54,7 +59,7 @@
                                             <p>{{ perfil.sobre |default:"Nenhuma experiência cadastrada." }}</p>
                                         </div>
                                         <div class="mt-5">
-                                            <h5 class="text-dark mb-4">Experiência</h5>
+                                            <h5 class="text-dark mb-4">Habilidades</h5>
                                             <p>
                                                 {%if habilidades %}
                                                     {%for habilidade in habilidades%}
@@ -68,15 +73,23 @@
                                         </div>
                                         
                                         <div class="mt-5">
-                                            <h5 class="text-dark mb-4">Atende aos</h5>
+                                            <h5 class="text-dark mb-4">Dias Disponíveis</h5>
                                             <p>
-                                                {%if habilidades %}
-                                                    {%for habilidade in habilidades%}
-                                                        {{ habilidade }} |
+                                                {% if diasAtendimento %}
+                                                    {% for dia in diasAtendimento %}
+                                                        {{ dia }} |
                                                     {%endfor%}
                                                 {% else %}
                                                     nhum dia cadastrada.
                                                 {%endif%}
+                                            </p>
+                                        </div>
+
+                                        <div class="mt-5">
+                                            <h5 class="text-dark mb-4">Horários</h5>
+                                            <p>
+                                                Inicial - {{ horarios.horarioInicial }} </br>
+                                                Final - {{ horarios.horarioFinal }}
                                             </p>
                                         </div>
 

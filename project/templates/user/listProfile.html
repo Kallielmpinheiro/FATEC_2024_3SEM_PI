@@ -48,8 +48,7 @@
                                 <th scope="col">Experiencia</th>
                                 <th scope="col">Área de Atuação</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Visualizar Perfil</th>
-                                <th scope="col">Iniciar Chat</th>
+                                <th scope="col">Ações</th>
 
                             </tr>
                         </thead>
@@ -68,16 +67,26 @@
                                             <td>{{ perfil.nivelExperiencia |default:"Não informado" }}</td>
                                             <td>{{ perfil.areaAtuacao | default:"Não informado"}}</td>
                                             <td>{{ perfil.typeUser | default:"Não informado"}}</td>
-            
-                                            <td>
-                                                <a href="{% url 'user:profile' id=perfil.iduser %}"
-                                                    class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0 "><i
-                                                        class="ti ti-id-badge"></i></a>
-                                            </td>
-                                            <td>
-                                                <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}"
-                                                    class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0 "><i
-                                                        class="ti ti-id-badge"></i></a>
+
+                                            <td role="cell">
+                                                <div style="display: flex;">
+                                                    <div class="mr-2">
+                                                        <div class="dropdown">
+                                                            <!-- data-toggle="dropdown" ativará o menu -->
+                                                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">...</button>
+                                                            <div class="dropdown-menu">
+                                                                <ul class="pl-2 pr-2 nav flex-column">
+                                                                    <li class="nav-item">
+                                                                        <a href="{% url 'user:profile' id=perfil.iduser %}" class="dropdown-item btn btn-outline-primary btn-sm">Visualizar Perfil</a>
+                                                                    </li>
+                                                                    <li class="nav-item">
+                                                                        <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}" class="dropdown-item btn btn-outline-primary btn-sm">Iniciar Chat</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>                                        
                                     {% endif %}
