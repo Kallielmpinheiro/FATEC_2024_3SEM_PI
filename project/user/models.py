@@ -80,7 +80,7 @@ class Perfil(Document):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"id:{self.iduser}, nome: {self.nome}, nivelExperiencia: {self.nivelExperiencia}, habilidades: {', '.join(self.habilidades)}"
+        return f"id:{self.iduser}, nome: {self.nome}, nivelExperiencia: {self.nivelExperiencia}, habilidades: {', '.join(self.habilidades)}, type: {self.typeUser}"
     
     meta = {
         'indexes':[

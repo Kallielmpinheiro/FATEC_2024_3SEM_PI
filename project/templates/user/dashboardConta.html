@@ -140,19 +140,21 @@
                                                 {{ formPerfil.habilidades}}
                                             </div>
 
-                                            <div class="form-group col-md-4">
-                                                <label for="fb">{{ formPerfil.diasAtendimento.label}}</label>
-                                                {{ formPerfil.diasAtendimento}}
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label for="fb">{{ formPerfil.horaInicio.label}}</label>
-                                                {{ formPerfil.horaInicio}}
-                                            </div>
+                                            {% if user.typeUser == 'Mentor' %}
+                                                <div class="form-group col-md-4">
+                                                    <label for="fb">{{ formPerfil.diasAtendimento.label}}</label>
+                                                    {{ formPerfil.diasAtendimento}}
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label for="fb">{{ formPerfil.horaInicio.label}}</label>
+                                                    {{ formPerfil.horaInicio}}
+                                                </div>
 
-                                            <div class="form-group col-md-4">
-                                                <label for="fb">{{ formPerfil.horaFinal.label}}</label>
-                                                {{ formPerfil.horaFinal}}
-                                            </div>
+                                                <div class="form-group col-md-4">
+                                                    <label for="fb">{{ formPerfil.horaFinal.label}}</label>
+                                                    {{ formPerfil.horaFinal}}
+                                                </div>
+                                            {% endif %}
                                         </div>
 
                                         <button type="submit" class="btn btn-primary">Atualizar

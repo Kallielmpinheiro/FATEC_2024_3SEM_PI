@@ -19,7 +19,7 @@
                                         </div>
                                         <div class="profile pt-4">
                                             <h4 class="mb-1">{{ perfil.nome }} </h4>
-                                            <p>{{ perfil.nivelExperiencia }} </p>
+                                            <p>{{ perfil.nivelExperiencia }} | {{ perfil.typeUser }} </p>
                                         </div>
                                     </div>
                                 </div>
@@ -81,26 +81,28 @@
                                             </p>
                                         </div>
                                         
-                                        <div class="mt-5">
-                                            <h5 class="text-dark mb-4">Dias Disponíveis</h5>
-                                            <p>
-                                                {% if diasAtendimento %}
-                                                    {% for dia in diasAtendimento %}
-                                                        {{ dia }} |
-                                                    {%endfor%}
-                                                {% else %}
-                                                    nhum dia cadastrada.
-                                                {%endif%}
-                                            </p>
-                                        </div>
+                                        {% if perfil.typeUser != 'Mentorado' %}
+                                            <div class="mt-5">
+                                                <h5 class="text-dark mb-4">Dias Disponíveis</h5>
+                                                <p>
+                                                    {% if diasAtendimento %}
+                                                        {% for dia in diasAtendimento %}
+                                                            {{ dia }} |
+                                                        {%endfor%}
+                                                    {% else %}
+                                                        nhum dia cadastrada.
+                                                    {%endif%}
+                                                </p>
+                                            </div>
 
-                                        <div class="mt-5">
-                                            <h5 class="text-dark mb-4">Horários</h5>
-                                            <p>
-                                                Inicial - {{ horarios.horarioInicial }} </br>
-                                                Final - {{ horarios.horarioFinal }}
-                                            </p>
-                                        </div>
+                                            <div class="mt-5">
+                                                <h5 class="text-dark mb-4">Horários</h5>
+                                                <p>
+                                                    Inicial - {{ horarios.horarioInicial }} </br>
+                                                    Final - {{ horarios.horarioFinal }}
+                                                </p>
+                                            </div>
+                                        {% endif %}
 
                                     </div>
                                 </div>
