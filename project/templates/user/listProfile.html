@@ -55,12 +55,11 @@
                         <tbody>
                             {% if perfis %}
                                 {% for perfil in perfis %}
-                                    <!-- Mentor visualiza todos -->
-                                    {% if  user.typeUser == 'Mentor'  %}
+                                    {%if user.iduser != perfil.iduser%}
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center">
-            
+
                                                     <p class="font-weight-bold">{{ perfil.nome}} </p>
                                                 </div>
                                             </td>
@@ -73,14 +72,20 @@
                                                     <div class="mr-2">
                                                         <div class="dropdown">
                                                             <!-- data-toggle="dropdown" ativará o menu -->
-                                                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">...</button>
+                                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">...</button>
                                                             <div class="dropdown-menu">
                                                                 <ul class="pl-2 pr-2 nav flex-column">
                                                                     <li class="nav-item">
-                                                                        <a href="{% url 'user:profile' id=perfil.iduser %}" class="dropdown-item btn btn-outline-primary btn-sm">Visualizar Perfil</a>
+                                                                        <a href="{% url 'user:profile' id=perfil.iduser %}"
+                                                                            class="dropdown-item btn btn-outline-primary btn-sm">Visualizar
+                                                                            Perfil</a>
                                                                     </li>
                                                                     <li class="nav-item">
-                                                                        <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}" class="dropdown-item btn btn-outline-primary btn-sm">Iniciar Chat</a>
+                                                                        <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}"
+                                                                            class="dropdown-item btn btn-outline-primary btn-sm">Iniciar
+                                                                            Chat</a>
                                                                     </li>
                                                                 </ul>
                                                             </div>
@@ -88,33 +93,8 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                        </tr>                                        
-                                    {% endif %}
-                                    <!-- Mentora visualiza apenas mentor -->
-                                    {% if  user.typeUser == 'Mentorado' and perfil.typeUser == 'Mentor'  %}
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-            
-                                                    <p class="font-weight-bold">{{ perfil.nome}} </p>
-                                                </div>
-                                            </td>
-                                            <td>{{ perfil.nivelExperiencia |default:"Não informado" }}</td>
-                                            <td>{{ perfil.areaAtuacao | default:"Não informado"}}</td>
-                                            <td>{{ perfil.typeUser | default:"Não informado"}}</td>
-            
-                                            <td>
-                                                <a href="{% url 'user:profile' id=perfil.iduser %}"
-                                                    class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0 "><i
-                                                        class="ti ti-id-badge"></i></a>
-                                            </td>
-                                            <td>
-                                                <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}"
-                                                    class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0 "><i
-                                                        class="ti ti-id-badge"></i></a>
-                                            </td>
-                                        </tr>                                        
-                                    {% endif %}
+                                        </tr>
+                                    {%endif%}
                                 {% endfor %}
                             {% else %}
                             <tr>

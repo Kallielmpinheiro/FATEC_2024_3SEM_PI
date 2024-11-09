@@ -18,7 +18,7 @@
                                             <img src="{% static 'img/user.png' %}" class="img-fluid" alt="users-avatar">
                                         </div>
                                         <div class="profile pt-4">
-                                            <h4 class="mb-1">{{ user.nome }} </h4>
+                                            <h4 class="mb-1">{{ perfil.nome }} </h4>
                                             <p>{{ perfil.nivelExperiencia }} </p>
                                         </div>
                                     </div>
@@ -28,11 +28,20 @@
                                 <div class="contact-info pt-4">
                                     <h5 class="text-dark mb-1">Informações de Contato</h5>
                                     <p class="text-dark font-weight-medium pt-4 mb-2">Email</p>
-                                    <p>{{ user.gmail |default:"Não informado" }}</p>
+                                    <p>{{ perfil.gmail |default:"Não informado" }}</p>
                                     <p class="text-dark font-weight-medium pt-4 mb-2">Telefone</p>
-                                    <p>{{ user.telefone|default:"Não informado" }}</p>
+                                    <p>{{ perfil.telefone|default:"Não informado" }}</p>
                                     <p class="text-dark font-weight-medium pt-4 mb-2">Área de Atuação</p>
                                     <p>{{ perfil.areaAtuacao|default:"Não informada" }}</p>
+                                    <p class="text-dark font-weight-medium pt-4 mb-2">Facebook</p>
+                                    <a href="{{ redesSociais.facebook | default:'#' }}" target="_blank">{{ redesSociais.facebook | default:"Não informada" }}</a>
+                                    <p class="text-dark font-weight-medium pt-4 mb-2">Github</p>
+                                    <a href="{{ redesSociais.github | default:'#' }}" target="_blank">{{ redesSociais.github | default:"Não informada" }}</a>
+                                    <p class="text-dark font-weight-medium pt-4 mb-2">Instagram</p>
+                                    <a href="{{ redesSociais.instagram | default:'#' }}" target="_blank">{{ redesSociais.instagram | default:"Não informada" }}</a>
+                                    <p class="text-dark font-weight-medium pt-4 mb-2">LinkedIn</p>
+                                    <a href="{{ redesSociais.linkedIn | default:'#' }}" target="_blank">{{ redesSociais.linkedIn | default:"Não informada" }}</a>
+
                                 </div>
                             </div>
                         </div>

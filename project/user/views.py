@@ -161,10 +161,15 @@ class MentorProfileListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        search_query = self.request.POST.get('search_query', None)
+        search_query = self.request.GET.get('search_query', None)
         if search_query:
-            return PerfilService.search_perfis_by_name(search_query)
-        return PerfilService.get_all_perfis()
+            perfils = PerfilService.get_by_search(search_query)
+        else:
+            perfils = PerfilService.get_all_perfis()
+        
+        if self.request.user.typeUser == 'Mentorado':
+            perfils = perfils.filter(typeUser='Mentor')
+        return perfils
     
     
     
@@ -172,14 +177,13 @@ class MentorProfileDetailView(LoginRequiredMixin, DetailView):
     template_name = 'user/profile.html'
     context_object_name = 'perfil'
 
-    
-
     def get_object(self):
+        
         iduser = self.kwargs.get('id')
+     
         return PerfilService.get_perfil_by_user_id(iduser)
 
     def get_context_data(self, **kwargs):
-
         dias_semana = {
             '1': 'Domingo',
             '2': 'Segunda-feira',
@@ -202,7 +206,6 @@ class MentorProfileDetailView(LoginRequiredMixin, DetailView):
             )
         )
         print(context)
-     
         return context
 
 class DashboardChatView(LoginRequiredMixin, TemplateView):

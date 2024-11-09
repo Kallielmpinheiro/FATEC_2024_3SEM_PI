@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="search-content">
                                        
-                                        <form method="POST" action="{% url 'user:mentorProfile' %}">
+                                        <form method="GET" action="{% url 'user:mentorProfile' %}">
                                             {% csrf_token %}
                                             <div class="form-group">
                                                 <i class="ti ti-search magnifier"></i>

@@ -16,3 +16,8 @@ class PerfilService:
     @staticmethod
     def get_all_perfis():
         return PerfilRepository.get_all_perfis()
+    
+    @staticmethod
+    def get_by_search(search):
+        return PerfilRepository.get_by_search(search)
+    
