@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from django.views.generic import FormView, TemplateView, ListView, DetailView, View
 from django.contrib.auth import login as auth_login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -5,10 +6,11 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
 from .forms import LoginForm, UserForm, PerfilForm
+from .choices import SKILLS_CHOICES
 from .services.user_service import UserService
 from .services.perfil_service import PerfilService
 from database.db import connectMongoDB
-from .models import User
+from .models import User, PesquisaHabilidades
 
 connectMongoDB()
 
@@ -88,6 +90,14 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
+
+        # BUSCA AS LINGUAGENS NO BANCO
+        resultados = PesquisaHabilidades.objects.aggregate(
+            [
+                {"$group": {"_id": "$habilidade", "contagem": {"$sum": 1}}},  
+                {"$sort": {"contagem": -1}}  
+            ]
+        )
         return context
 
 class DashboardContaView(LoginRequiredMixin, FormView):
@@ -162,17 +172,32 @@ class MentorProfileListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         search_query = self.request.GET.get('search_query', None)
+        user_logged = self.request.user
+
         if search_query:
             perfils = PerfilService.get_by_search(search_query)
         else:
             perfils = PerfilService.get_all_perfis()
         
-        if self.request.user.typeUser == 'Mentorado':
+        if user_logged.typeUser == 'Mentorado':
             perfils = perfils.filter(typeUser='Mentor')
+
+            if search_query:
+                valid_skills = [skill[0].lower() for skill in SKILLS_CHOICES]
+                matches = [habilidade for habilidade in valid_skills if habilidade.startswith(search_query) ]
+                if matches:
+                    print('salvar matches com:  ' + search_query)
+
+                    for match in matches:
+                        print('combinacao:  ' + match )
+                        PesquisaHabilidades.objects.create(
+                            iduser=user_logged.iduser, habilidade=match
+                        )
+        
+        
         return perfils
     
-    
-    
+
 class MentorProfileDetailView(LoginRequiredMixin, DetailView):
     template_name = 'user/profile.html'
     context_object_name = 'perfil'

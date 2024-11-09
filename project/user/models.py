@@ -1,5 +1,7 @@
+from datetime import datetime, timezone
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from django.forms import DateTimeField
 from mongoengine import Document, StringField, ListField, DictField, IntField , ValidationError
 
 from django.db.models import Max
@@ -90,3 +92,8 @@ class Perfil(Document):
             }
         ]
     }
+
+
+class PesquisaHabilidades(Document):
+    iduser = IntField()
+    habilidade = StringField(max_length=255)

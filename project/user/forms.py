@@ -2,7 +2,7 @@ from django import forms
 from .models import User, Perfil
 from django.forms import PasswordInput
 from datetime import time, timedelta
-
+from .choices import SKILLS_CHOICES
 class UserForm(forms.ModelForm):
     senha = forms.CharField(widget=PasswordInput(), max_length=128)
  
@@ -91,51 +91,6 @@ class PerfilForm(forms.Form): # MongoDB
         , required=False
     )
 
-    SKILLS_CHOICES = [
-        ('python', 'Python'),
-        ('java', 'Java'),
-        ('javascript', 'JavaScript'),
-        ('csharp', 'C#'),
-        ('ruby', 'Ruby'),
-        ('php', 'PHP'),
-        ('html', 'HTML'),
-        ('css', 'CSS'),
-        ('typescript', 'TypeScript'),
-        ('go', 'Go'),
-        ('swift', 'Swift'),
-        ('kotlin', 'Kotlin'),
-        ('r', 'R'),
-        ('scala', 'Scala'),
-        ('perl', 'Perl'),
-        ('lua', 'Lua'),
-        ('sql', 'SQL'),
-        ('bash', 'Bash'),
-        ('powershell', 'PowerShell'),
-        ('rust', 'Rust'),
-        ('haskell', 'Haskell'),
-        ('dart', 'Dart'),
-        ('elixir', 'Elixir'),
-        ('clojure', 'Clojure'),
-        ('fsharp', 'F#'),
-        ('objectivec', 'Objective-C'),
-        ('matlab', 'MATLAB'),
-        ('assembly', 'Assembly'),
-        ('vba', 'VBA'),
-        ('fortran', 'Fortran'),
-        ('cobol', 'COBOL'),
-        ('groovy', 'Groovy'),
-        ('julia', 'Julia'),
-        ('tcl', 'Tcl'),
-        ('scheme', 'Scheme'),
-        ('erlang', 'Erlang'),
-        ('nim', 'Nim'),
-        ('solidity', 'Solidity'),
-        ('ada', 'Ada'),
-        ('prolog', 'Prolog'),
-        ('vbnet', 'VB.NET'),
-        ('delphi', 'Delphi'),
-        ('sml', 'Standard ML'),
-    ]
 
     habilidades = forms.MultipleChoiceField(
         choices=SKILLS_CHOICES,
