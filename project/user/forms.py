@@ -9,8 +9,7 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User     
         fields = ['nome', 'cpf', 'senha', 'gmail', 'telefone', 'dataNascimento', 'typeUser']
-         
-
+        
         widgets = {
             'nome': forms.TextInput( attrs={'placeholder': 'Nome completo'}),
             'cpf': forms.TextInput( attrs={'placeholder': 'Seu CPF'}),
@@ -20,11 +19,6 @@ class UserForm(forms.ModelForm):
             'typeUser': forms.Select( attrs=({'class': 'input-square'}) ),
             'senha': forms.PasswordInput( attrs={'placeholder': 'senha', 'type': 'password'})
         }
-
-   
-        
-from django import forms
-
 class LoginForm(forms.Form):
     cpf = forms.CharField(
         max_length=11, 
@@ -41,12 +35,8 @@ class LoginForm(forms.Form):
             'placeholder': 'Digite sua senha'  
         })
     )
-
-    
     
 class PerfilForm(forms.Form): # MongoDB
-
-    
     nome = forms.CharField(
         widget=forms.TextInput(
             attrs={ "class": "form-control"}
@@ -68,9 +58,9 @@ class PerfilForm(forms.Form): # MongoDB
     nivelExperiencia = forms.ChoiceField(
         label='Nível de Experiência',
         choices= [
-                ('junior', 'Junior'), 
-                ('pleno', 'Pleno'), 
-                ( 'senior', 'Sênior')
+            ('Junior', 'Junior'), 
+            ('Pleno', 'Pleno'), 
+            ( 'Sênior', 'Sênior')
         ],
         widget= forms.Select(attrs={ "class": "form-control"}), 
         required=False

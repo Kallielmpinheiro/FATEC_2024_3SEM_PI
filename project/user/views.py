@@ -125,7 +125,7 @@ class DashboardContaView(LoginRequiredMixin, FormView):
         perfil.nome = perfil_data['nome']
         perfil.areaAtuacao = perfil_data['areaAtuacao']
         perfil.sobre = perfil_data['sobre']
-        perfil.nivelExperiencia = perfil_data['nivelExperiencia'].capitalize()
+        perfil.nivelExperiencia = perfil_data['nivelExperiencia']
         perfil.redesSociais = {
             'facebook': perfil_data['facebook'],
             'github': perfil_data['github'],
