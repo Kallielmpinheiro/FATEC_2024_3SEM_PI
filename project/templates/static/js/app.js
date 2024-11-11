@@ -4963,8 +4963,17 @@ $(document).ready(function() {
 
 })(window, document, window.jQuery);
 
+
 var programmingLanguagesChart = jQuery('#programmingLanguagesChart');
 if (programmingLanguagesChart.length > 0) {
+    
+    const data  = document.currentScript.dataset;
+    let  most_searched_skills  = data.most_searched_skills.replace(/'/g, '"');
+    most_searched_skills =JSON.parse(most_searched_skills)
+    
+    const labelsChart = most_searched_skills.map( item => item._id)
+    const valuesChart = most_searched_skills.map( item => item.contagem)
+
     var options = {
         chart: {
             height: 340,
@@ -4989,15 +4998,12 @@ if (programmingLanguagesChart.length > 0) {
             width: 2,
             colors: ['transparent']
         },
-        series: [{
-            name: 'Número de Estudantes',
-            data: [120, 100, 80, 90, 70, 50] // Exemplos de dados de estudantes
-        }, {
+        series: [ {
             name: 'Contribuições em Projetos',
-            data: [150, 130, 120, 110, 95, 85] // Exemplos de dados de contribuições
+            data: valuesChart
         }],
         xaxis: {
-            categories: ['JavaScript', 'Python', 'Java', 'C#', 'C++', 'Ruby'], // Linguagens de programação
+            categories: labelsChart, 
             axisBorder: {
                 show: false,
             },

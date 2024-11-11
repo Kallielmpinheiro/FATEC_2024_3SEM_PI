@@ -91,13 +91,20 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
 
-        # BUSCA AS LINGUAGENS NO BANCO
-        resultados = PesquisaHabilidades.objects.aggregate(
+        pesquisaHabilidades  = PesquisaHabilidades.objects.aggregate(
             [
                 {"$group": {"_id": "$habilidade", "contagem": {"$sum": 1}}},  
-                {"$sort": {"contagem": -1}}  
+                {"$sort": {"contagem": -1}},
+                {"$limit": 5} 
             ]
         )
+
+        most_searched_skills = []
+        for pesquisa in pesquisaHabilidades:
+            most_searched_skills.append(pesquisa)
+
+        context['most_searched_skills'] = most_searched_skills
+                    
         return context
 
 class DashboardContaView(LoginRequiredMixin, FormView):

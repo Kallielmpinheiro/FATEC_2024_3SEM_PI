@@ -97,3 +97,6 @@ class Perfil(Document):
 class PesquisaHabilidades(Document):
     iduser = IntField()
     habilidade = StringField(max_length=255)
+
+    def __str__(self):
+        return super().__str__()
