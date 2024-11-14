@@ -11,6 +11,7 @@ from .services.user_service import UserService
 from .services.perfil_service import PerfilService
 from database.db import connectMongoDB
 from .models import User, PesquisaHabilidades
+from django.core.exceptions import ValidationError
 
 connectMongoDB()
 
@@ -37,21 +38,17 @@ class UserLoginView(FormView):
 class UserRegistrationView(FormView):
     template_name = 'user/cadastro.html'
     form_class = UserForm
-    success_url = reverse_lazy('user:index')
 
     def form_valid(self, form):
         data = form.cleaned_data
-        
-        if UserService.check_user_exists(data['cpf']):
-            messages.error(self.request, "Erro: Usuário com este CPF já existe.")
-            return self.form_invalid(form)
 
         try:
             user_data = {key: data[key] for key in data if key != 'senha'}
-            user = User(**user_data)  
-            
+            user = User(**user_data)
             user.set_password(data['senha'])
             user.save()
+
+            user.backend = 'user.authentication.CPFBackend'
 
             perfil_data = {
                 'iduser': user.iduser,
@@ -67,16 +64,26 @@ class UserRegistrationView(FormView):
             
             PerfilService.create_perfil(perfil_data)
 
-            messages.success(self.request, "Usuário e perfil cadastrados com sucesso!")
-            return super().form_valid(form)
+            auth_login(self.request, user)
+            return redirect('user:dashboard')
 
-        except ValueError as e:
-            messages.error(self.request, str(e))
+        except ValidationError as ve:
+            form.add_error(None, f"Erro de validação: {str(ve)}")
             return self.form_invalid(form)
+
+        except User.DoesNotExist:
+            form.add_error('cpf', 'Este CPF já está registrado.')
+            return self.form_invalid(form)
+
         except Exception as e:
-            messages.error(self.request, f"Erro ao salvar o usuário/perfil: {e}")
+            form.add_error(None, f"Erro ao salvar o usuário/perfil: {str(e)}")
             return self.form_invalid(form)
 
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, f"{field.capitalize()}: {error}")
+        return super().form_invalid(form)
 
 class LogoutView(View):
     def get(self, request, *args, **kwargs):

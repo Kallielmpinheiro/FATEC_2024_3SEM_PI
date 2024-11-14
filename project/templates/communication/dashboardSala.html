@@ -30,7 +30,14 @@
     </style>
 </head>
 <body>
-    <h1>Chat Sala: {{ room.salaId }}</h1>
+    {% if user.typeUser == "Mentorado" %}
+    <h1>Você está conversando com: {{ room.get_nome_mentor }}</h1>
+    {% elif user.typeUser == "Mentor" %}
+    <h1>Você está conversando com: {{ room.get_nome_mentorado }}</h1>
+    {% endif %}
+
+
+    
     
     <div class="messages">
         {% for message in messages %}
@@ -44,7 +51,7 @@
     <button id="chat-message-submit">Enviar</button>
 
     <script>
-        const salaId = "{{ room.salaId }}"; 
+        const salaId = "{{ room.sala_id }}"; 
         const wsUrl = `ws://${window.location.hostname}:8001/ws/chat/${salaId}/`;
         const chatSocket = new WebSocket(wsUrl);
 
