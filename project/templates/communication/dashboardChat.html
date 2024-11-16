@@ -11,7 +11,7 @@
             <div>
                 <strong>{{ mentor.nome }}</strong> - {{ mentor.gmail }}
             </div>
-            <a href="{% url 'communication:iniciarChat' mentor.cpf %}">
+            <a href="{% url 'communication:iniciarChat' mentor.iduser %}">
                 <button class="btn btn-primary">Iniciar Chat</button>
             </a>
         </li>
@@ -28,9 +28,9 @@
     {% if salas_abertas %}
         {% for sala in salas_abertas %}
         <li>
-            <strong>Sala ID:</strong> {{ sala.salaId }}<br />
-            <strong>CPF Mentor:</strong> {{ sala.cpfMentor }}<br />
-            <strong>CPF Mentorado:</strong> {{ sala.cpfMentorado }}<br />
+            <strong>Sala ID:</strong> {{ sala.sala_id }}<br />
+            <strong>CPF Mentor:</strong> {{ sala.mentor_id }}<br />
+            <strong>CPF Mentorado:</strong> {{ sala.mentorado_id }}<br />
 
             <strong>Últimas mensagens:</strong><br />
             <ul>
@@ -44,10 +44,12 @@
                 {% endfor %}
             </ul>
 
+            
             <form action="{% url 'communication:entrar_na_sala' salaId=sala.salaId %}" method="post">
                 {% csrf_token %}
                 <button class="btn btn-secondary">Entrar na Sala</button>
             </form>
+            
         </li>
         {% endfor %}
     {% else %}

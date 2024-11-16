@@ -2,23 +2,67 @@ from django import forms
 from .models import User, Perfil
 from django.forms import PasswordInput
 from datetime import time, timedelta
-from .choices import SKILLS_CHOICES
+    
 class UserForm(forms.ModelForm):
-    senha = forms.CharField(widget=PasswordInput(), max_length=128)
- 
-    class Meta:
-        model = User     
-        fields = ['nome', 'cpf', 'senha', 'gmail', 'telefone', 'dataNascimento', 'typeUser']
-        
-        widgets = {
-            'nome': forms.TextInput( attrs={'placeholder': 'Nome completo'}),
-            'cpf': forms.TextInput( attrs={'placeholder': 'Seu CPF'}),
-            'gmail': forms.EmailInput( attrs={ 'placeholder': 'E-maiil'}),
-            'telefone': forms.TextInput( attrs={ 'placeholder': 'Telefone'}),
-            'dataNascimento': forms.DateInput(attrs={'type': 'date'}),
-            'typeUser': forms.Select( attrs=({'class': 'input-square'}) ),
-            'senha': forms.PasswordInput( attrs={'placeholder': 'senha', 'type': 'password'})
+    error_messages = {
+        'nome': {
+            'required': 'Por favor, preencha seu nome.',
+            'max_length': 'O nome não pode ter mais de 100 caracteres.'
+        },
+        'cpf': {
+            'required': 'Por favor, preencha seu CPF.',
+            'max_length': 'O CPF deve ter exatamente 11 caracteres.'
+        },
+        'gmail': {
+            'required': 'Por favor, insira seu e-mail.',
+            'invalid': 'Por favor, insira um e-mail válido.'
+        },
+        'telefone': {
+            'required': 'Por favor, insira seu telefone.'
+        },
+        'dataNascimento': {
+            'required': 'Por favor, insira sua data de nascimento.'
+        },
+        'typeUser': {
+            'required': 'Por favor, selecione o tipo de usuário.'
         }
+    }
+
+    senha = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Senha', 'type': 'password'}),
+        max_length=128,
+        error_messages={
+            'required': 'Por favor, insira sua senha.',
+            'max_length': 'A senha não pode ter mais de 128 caracteres.'
+        }
+    )
+
+    class Meta:
+        model = User
+        fields = ['nome', 'cpf', 'senha', 'gmail', 'telefone', 'dataNascimento', 'typeUser']
+        widgets = {
+            'nome': forms.TextInput(attrs={'placeholder': 'Nome completo'}),
+            'cpf': forms.TextInput(attrs={'placeholder': 'Seu CPF'}),
+            'gmail': forms.EmailInput(attrs={'placeholder': 'E-mail'}),
+            'telefone': forms.TextInput(attrs={'placeholder': 'Telefone'}),
+            'dataNascimento': forms.DateInput(attrs={'type': 'date'}),
+            'typeUser': forms.Select(attrs={'class': 'input-square'}),
+            'senha': forms.PasswordInput(attrs={'placeholder': 'Senha', 'type': 'password'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, messages in self.error_messages.items():
+            if field_name in self.fields:
+                self.fields[field_name].error_messages = messages
+
+    def clean_cpf(self):
+        cpf = self.cleaned_data.get('cpf')
+        if len(cpf) != 11:
+            self.add_error('cpf', 'O CPF deve ter exatamente 11 caracteres.')
+        return cpf
+
 class LoginForm(forms.Form):
     cpf = forms.CharField(
         max_length=11, 
@@ -26,14 +70,22 @@ class LoginForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': 'input',  
             'placeholder': 'Digite seu CPF'  
-        })
+        }),
+        error_messages={
+            'required': 'Por favor, insira seu CPF.',
+            'max_length': 'O CPF deve ter exatamente 11 caracteres.'
+        }
     )
+
     senha = forms.CharField(
         label="Senha",
         widget=forms.PasswordInput(attrs={
             'class': 'input',  
             'placeholder': 'Digite sua senha'  
-        })
+        }),
+        error_messages={
+            'required': 'Por favor, insira sua senha.',
+        }
     )
     
 class PerfilForm(forms.Form): # MongoDB
@@ -91,6 +143,51 @@ class PerfilForm(forms.Form): # MongoDB
         , required=False
     )
 
+    SKILLS_CHOICES = [
+        ('python', 'Python'),
+        ('java', 'Java'),
+        ('javascript', 'JavaScript'),
+        ('csharp', 'C#'),
+        ('ruby', 'Ruby'),
+        ('php', 'PHP'),
+        ('html', 'HTML'),
+        ('css', 'CSS'),
+        ('typescript', 'TypeScript'),
+        ('go', 'Go'),
+        ('swift', 'Swift'),
+        ('kotlin', 'Kotlin'),
+        ('r', 'R'),
+        ('scala', 'Scala'),
+        ('perl', 'Perl'),
+        ('lua', 'Lua'),
+        ('sql', 'SQL'),
+        ('bash', 'Bash'),
+        ('powershell', 'PowerShell'),
+        ('rust', 'Rust'),
+        ('haskell', 'Haskell'),
+        ('dart', 'Dart'),
+        ('elixir', 'Elixir'),
+        ('clojure', 'Clojure'),
+        ('fsharp', 'F#'),
+        ('objectivec', 'Objective-C'),
+        ('matlab', 'MATLAB'),
+        ('assembly', 'Assembly'),
+        ('vba', 'VBA'),
+        ('fortran', 'Fortran'),
+        ('cobol', 'COBOL'),
+        ('groovy', 'Groovy'),
+        ('julia', 'Julia'),
+        ('tcl', 'Tcl'),
+        ('scheme', 'Scheme'),
+        ('erlang', 'Erlang'),
+        ('nim', 'Nim'),
+        ('solidity', 'Solidity'),
+        ('ada', 'Ada'),
+        ('prolog', 'Prolog'),
+        ('vbnet', 'VB.NET'),
+        ('delphi', 'Delphi'),
+        ('sml', 'Standard ML'),
+    ]
 
     habilidades = forms.MultipleChoiceField(
         choices=SKILLS_CHOICES,
@@ -141,7 +238,3 @@ class PerfilForm(forms.Form): # MongoDB
             }
         )
     )
-
-   
-
-
