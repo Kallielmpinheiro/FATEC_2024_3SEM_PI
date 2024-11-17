@@ -105,13 +105,6 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     },
-    'userPerfil': {
-        'ENGINE': 'djongo',
-        'NAME': 'userPerfil',
-        'CLIENT': {
-            'host': 'localhost:27017',
-        }
-    }
 }
 
 # Password validation

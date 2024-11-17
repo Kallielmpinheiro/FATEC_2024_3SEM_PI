@@ -5,11 +5,11 @@ from user.models import Perfil
 
 # Create your models here.
 
-def generate_unique_sala_id(length=16):
+def generate_unique_salaId(length=16):
     while True:
-        sala_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
-        if not Room.objects(salaId=sala_id):
-            return sala_id
+        salaId = ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
+        if not Room.objects(salaId=salaId):
+            return salaId
 
 class Room(Document):
     mentor_id = IntField(required=True)
