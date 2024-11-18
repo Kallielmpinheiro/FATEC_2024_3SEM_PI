@@ -4982,7 +4982,7 @@ if (programmingLanguagesChart.length > 0) {
                 show: false,
             },
         },
-        colors: ['#FF5733', '#5530f7'], // Cores personalizáveis
+        colors: ['#5530f7'], // Cores personalizáveis
         plotOptions: {
             bar: {
                 horizontal: false,
