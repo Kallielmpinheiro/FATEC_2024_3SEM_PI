@@ -15,7 +15,7 @@
                     <nav>
                         <ol class="breadcrumb p-0 m-b-0">
                             <li class="breadcrumb-item">
-                                <a href="{% url 'user:dashboard' %}"><i class="ti ti-home"></i></a>
+                                <a href="{% url 'user:DashboardView' %}"><i class="ti ti-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
                                 Perfil
@@ -43,9 +43,10 @@
                                 <div class="profile-img text-center rounded-circle">
                                     <div class="pt-5">
                                         <div class="bg-img m-auto">
-                                            <img src="{% static 'img/user.png' %}" class="img-fluid"
-                                                 alt="users-avatar">
+                                            <img src="{% if user.Image %}{{ user.Image.url }}{% else %}{% static 'img/user.png' %}{% endif %}" 
+                                                 class="img-fluid" alt="users-avatar">
                                         </div>
+                                        
                                         <div class="profile pt-4">
                                             <h4 class="mb-1">{{  user.nome }} </h4>
                                             <p>{{  perfil.nivelExperiencia }} </p>
@@ -79,9 +80,23 @@
                                 </div>
 
                                 <div class="profile-btn text-center">
-                                    <div><button class="btn btn-light text-primary mb-2">Upload Nova
-                                            foto de Perfil</button></div>
-                                    <div><button class="btn btn-danger">Deletar</button></div>
+
+                                    <div class="profile-btn text-center">
+                                        <form method="post" enctype="multipart/form-data" action="{% url 'user:UploadFotoPerfilView' %}" class="d-inline">
+                                            {% csrf_token %}
+                                            <input type="file" id="id_Image" name="Image" class="d-none">
+                                            <label for="id_Image" class="btn btn-light text-primary mb-2">
+                                                <i class="ti ti-upload"></i> Alterar Foto
+                                            </label>
+                                            <button type="submit" class="btn btn-primary">Enviar</button>
+                                        </form>
+                                    </div>
+                                    <div class="profile-btn text-center">
+                                        <form method="post" enctype="multipart/form-data" action="{% url 'user:DeleteFotoPerfilView' %}" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-primary">Remove</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +189,7 @@
 
 <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
 <script>
-    new MultiSelectTag('skills')  // id
+    new MultiSelectTag('skills')  // id 
     new MultiSelectTag('diasSemana')
 </script>
 

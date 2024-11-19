@@ -1,0 +1,19 @@
+
+{% block blockname %}
+
+<div class="row">
+    <div class="col-md-12 m-b-30">
+        <div class="d-block d-lg-flex flex-nowrap align-items-center">
+        <div class="container mt-4">
+            <h2>Atualizar Informações de Autenticação</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            </form>
+            <a href="{% url 'user:DashboardView ' %}" class="btn btn-secondary mt-2">Voltar</a>
+        </div>
+    </div>
+</div>
+{% endblock blockname %}
+    

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from uuid import uuid4
 from user.models import User
-from communication.models import Room, generate_unique_sala_id
+from communication.models import Room, generate_unique_salaId
 from django.http import JsonResponse, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
@@ -35,7 +35,7 @@ def iniciarChat(request, idMentor):
         if sala_existente:
             return redirect('communication:chat', salaId=sala_existente.salaId)
 
-        salaId = generate_unique_sala_id()
+        salaId = generate_unique_salaId()
         nova_sala = Room(
             mentor_id=mentor_id,
             mentorado_id=mentorado_id,

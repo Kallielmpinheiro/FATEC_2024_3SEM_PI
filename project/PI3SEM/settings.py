@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -105,13 +106,6 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     },
-    'userPerfil': {
-        'ENGINE': 'djongo',
-        'NAME': 'userPerfil',
-        'CLIENT': {
-            'host': 'localhost:27017',
-        }
-    }
 }
 
 # Password validation
@@ -150,6 +144,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'templates/static'),)
 STATIC_ROOT = os.path.join('static')
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -163,14 +160,17 @@ AUTHENTICATION_BACKENDS=[
 LOGIN_URL = 'user:user_login'
 LOGIN_REDIRECT_URL = 'dashboard'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'  # Usa cookies
 
 # Expira a sessão ao fechar o navegador
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 # Define o tempo de expiração da sessão (opcional)
-SESSION_COOKIE_AGE = 3600  # 1 hora
+SESSION_COOKIE_AGE = 1209600  # 2 semanas
 
 # Garante que a sessão seja salva apenas quando houver modificações
 SESSION_SAVE_EVERY_REQUEST = False
 AUTH_USER_MODEL = 'user.User'
 
+JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'fds2')
+JWT_EXPIRATION_DELTA = timedelta(weeks=2)

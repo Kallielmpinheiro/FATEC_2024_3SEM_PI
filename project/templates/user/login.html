@@ -23,7 +23,7 @@
             <path d="M10 17L15 12L10 7" stroke="#8e54e9" stroke-width="2" stroke-linecap="round"
               stroke-linejoin="round" />
             <path d="M15 12H3" stroke="#8e54e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
+          </svg> 
         </i>
         <h1>Faça seu login</h1>
       </div>
@@ -39,6 +39,7 @@
         <label for="id_cpf">CPF</label>
         {{ form.cpf }}
         <i id="cpf-icon" class="cpf-icon stroke">
+          
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path id="cpf-path"
               d="M3.33329 3.33331H16.6666C17.5833 3.33331 18.3333 4.08331 18.3333 4.99998V15C18.3333 15.9166 17.5833 16.6666 16.6666 16.6666H3.33329C2.41663 16.6666 1.66663 15.9166 1.66663 15V4.99998C1.66663 4.08331 2.41663 3.33331 3.33329 3.33331Z"
@@ -46,16 +47,14 @@
             <path id="cpf-path-2" d="M18.3333 5L9.99996 10.8333L1.66663 5" stroke-width="2" stroke-linecap="round"
               stroke-linejoin="round" />
           </svg>
-        </i>
-      </div>
 
+      </i>
+      </div>
       <div class="password">
         <label for="id_senha">Senha</label>
         {{ form.senha }}
-
-        
-
         <i id="lock-icon" class="lock-icon">
+
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path id="lock-path"
               d="M15.8333 9.16669H4.16667C3.24619 9.16669 2.5 9.91288 2.5 10.8334V16.6667C2.5 17.5872 3.24619 18.3334 4.16667 18.3334H15.8333C16.7538 18.3334 17.5 17.5872 17.5 16.6667V10.8334C17.5 9.91288 16.7538 9.16669 15.8333 9.16669Z"
@@ -64,6 +63,7 @@
               d="M5.83337 9.16669V5.83335C5.83337 4.72828 6.27236 3.66848 7.05376 2.88708C7.83516 2.10567 8.89497 1.66669 10 1.66669C11.1051 1.66669 12.1649 2.10567 12.9463 2.88708C13.7277 3.66848 14.1667 4.72828 14.1667 5.83335V9.16669"
               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
+
         </i>
         <i onclick="openEye()" id="eye-icon" class="eye-icon">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,52 +81,35 @@
               </clipPath>
             </defs>
           </svg>
+
         </i>
       </div>
-
-      {% if messages %}
-        {% for message in messages %}
-          {% if forloop.last %}
-            {% if message.tags == "error" %}
-              <p class="errorlist">{{ message }}</p>
-            {% endif %}
-          {% endif %}
-        {% endfor %}
-      {% endif %}
-
-        <div class="box" style="width: 100%;">
-          <div class="check">
-              <button onclick="showButton()" id="checkbox" class="checkbox" style="margin-right: 8px;">
-                  <i id="check-icon">
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="#473404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                      </svg>
-                  </i>
-              </button>
-              <p>Lembre-me</p>
-          </div>
-
-          <div style="display: flex; text-align: right;">
-            <a href="#">Esqueci minha senha</a>
+      <div class="box" style="width: 100%;">
+        <div class="check">
+          <input type="checkbox" id="id_remember_me" name="remember_me" hidden>
+          <button type="button" id="checkbox" onclick="showButton()" class="checkbox" style="margin-right: 8px;">
+            <i id="check-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="#473404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            </i>
+          </button>
+          <label for="id_remember_me">Lembre-me</label>
         </div>
-
-    </div>
+        <div style="display: flex; text-align: right;">
+        </div>
+      </div>
 
       <div class="buttons">
         <button class="button" type="submit">Entrar</button>
-
         <a href="{% url 'user:cadastro' %}"><span>Não tem uma conta?</span> Registre-se</a>
       </div>
-
     </form>
-
-
   </div>
 
   <div class="banner">
-    <img src="{% static '/img/tela.png' %}" alt="">
+    <img src="{% static 'img/tela.png' %}" alt="Banner">
   </div>
-
   <script src="{% static 'js/login.js' %}"></script>
 </body>
 

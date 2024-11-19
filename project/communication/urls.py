@@ -13,7 +13,7 @@ urlpatterns = [
     
     path('room/dashboard/', views.ListarMentores, name='ListarMentores'),
     path('room/start/<int:idMentor>/', views.iniciarChat, name='iniciarChat'),
-    path('room/chat/<str:sala_id>/', views.chat, name='chat'),
+    path('room/chat/<str:salaId>/', views.chat, name='chat'),
     path('room/list/', views.viewsChats, name='viewsChats'),
     path('room/enter/<str:salaId>/', views.entrar_na_sala, name='entrar_na_sala')
     

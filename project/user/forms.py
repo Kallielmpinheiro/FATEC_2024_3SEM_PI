@@ -2,6 +2,8 @@ from django import forms
 from .models import User, Perfil
 from django.forms import PasswordInput
 from datetime import time, timedelta
+from django.core.exceptions import ValidationError
+from django.core.files.images import get_image_dimensions
     
 class UserForm(forms.ModelForm):
     error_messages = {
@@ -25,7 +27,7 @@ class UserForm(forms.ModelForm):
         },
         'typeUser': {
             'required': 'Por favor, selecione o tipo de usuário.'
-        }
+        }        
     }
 
     senha = forms.CharField(
@@ -39,7 +41,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['nome', 'cpf', 'senha', 'gmail', 'telefone', 'dataNascimento', 'typeUser']
+        fields = ['nome', 'cpf', 'senha', 'gmail', 'telefone', 'dataNascimento', 'typeUser','Image']
         widgets = {
             'nome': forms.TextInput(attrs={'placeholder': 'Nome completo'}),
             'cpf': forms.TextInput(attrs={'placeholder': 'Seu CPF'}),
@@ -47,12 +49,13 @@ class UserForm(forms.ModelForm):
             'telefone': forms.TextInput(attrs={'placeholder': 'Telefone'}),
             'dataNascimento': forms.DateInput(attrs={'type': 'date'}),
             'typeUser': forms.Select(attrs={'class': 'input-square'}),
-            'senha': forms.PasswordInput(attrs={'placeholder': 'Senha', 'type': 'password'})
+            'senha': forms.PasswordInput(attrs={'placeholder': 'Senha', 'type': 'password'}),
+            'Image': forms.ClearableFileInput(attrs={'class': 'form-control'})
+
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         for field_name, messages in self.error_messages.items():
             if field_name in self.fields:
                 self.fields[field_name].error_messages = messages
@@ -62,6 +65,18 @@ class UserForm(forms.ModelForm):
         if len(cpf) != 11:
             self.add_error('cpf', 'O CPF deve ter exatamente 11 caracteres.')
         return cpf
+    
+    def clean_Image(self):
+        image = self.cleaned_data.get('Image')
+        if image:
+            if image.size > 5 * 1024 * 1024:
+                raise ValidationError('A imagem não pode ter mais de 5MB.')
+            if not image.content_type in ['image/jpeg', 'image/png']:
+                raise ValidationError('Apenas imagens JPEG e PNG são permitidas.')
+            width, height = get_image_dimensions(image)
+            if width > 2000 or height > 2000:
+                raise ValidationError('A imagem não pode exceder 2000x2000 pixels.')
+        return image
 
 class LoginForm(forms.Form):
     cpf = forms.CharField(
@@ -78,10 +93,12 @@ class LoginForm(forms.Form):
     )
 
     senha = forms.CharField(
+        
         label="Senha",
         widget=forms.PasswordInput(attrs={
             'class': 'input',  
-            'placeholder': 'Digite sua senha'  
+            'placeholder': 'Digite sua senha',
+            'id':'id_senha'
         }),
         error_messages={
             'required': 'Por favor, insira sua senha.',
@@ -238,3 +255,42 @@ class PerfilForm(forms.Form): # MongoDB
             }
         )
     )
+    
+class UserAuthForm(UserForm):
+    
+    nova_senha = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Nova Senha'}),
+        max_length=128,
+        help_text='Preencha para alterar a senha.',
+    )
+    confirmar_senha = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirme a Nova Senha'}),
+        max_length=128,
+    )
+
+    class Meta(UserForm.Meta):
+        fields = ['cpf', 'gmail']  
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['cpf'].widget.attrs['readonly'] = True
+
+    def clean(self):
+        cleaned_data = super().clean()
+        nova_senha = cleaned_data.get("nova_senha")
+        confirmar_senha = cleaned_data.get("confirmar_senha")
+        if nova_senha or confirmar_senha:
+            if nova_senha != confirmar_senha:
+                self.add_error("confirmar_senha", "As senhas não coincidem.")
+        return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        nova_senha = self.cleaned_data.get("nova_senha")
+        if nova_senha:
+            user.set_password(nova_senha)
+        if commit:
+            user.save()
+        return user
