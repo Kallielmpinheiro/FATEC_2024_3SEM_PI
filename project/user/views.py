@@ -1,17 +1,20 @@
 from datetime import datetime, timezone
-from django.views.generic import FormView, TemplateView, ListView, DetailView, View
+from django.views.generic import FormView, TemplateView, ListView, DetailView, View,UpdateView
 from django.contrib.auth import login as auth_login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
-from .forms import LoginForm, UserForm, PerfilForm
+from .forms import LoginForm, UserForm, PerfilForm, UserAuthForm
 from .choices import SKILLS_CHOICES
 from .services.user_service import UserService
 from .services.perfil_service import PerfilService
 from database.db import connectMongoDB
 from .models import User, PesquisaHabilidades
 from django.core.exceptions import ValidationError
+import os
+from django.conf import settings
+import jwt
 
 connectMongoDB()
 
@@ -25,16 +28,47 @@ class UserLoginView(FormView):
     def form_valid(self, form):
         cpf = form.cleaned_data.get('cpf')
         senha = form.cleaned_data.get('senha')
-        user = UserService.authenticate_user(cpf, senha)
-        
+        remember_me = self.request.POST.get('remember_me')
+
+        user = UserService.authenticate_user(cpf, senha)  
         if user:
             auth_login(self.request, user)
-            messages.success(self.request, "Login realizado com sucesso.")
-            return redirect('user:dashboard')
-        
+
+            response = redirect('user:DashboardView')
+
+            if remember_me == 'on':
+                payload = {
+                    'cpf': cpf,
+                    'exp': datetime.utcnow() + settings.JWT_EXPIRATION_DELTA,  # 2 semanas
+                }
+                token = jwt.encode(payload, settings.JWT_SECRET_KEY, algorithm='HS256')
+
+                response.set_cookie(
+                    'remember_token', token, max_age=1209600, httponly=True, secure=True, samesite='Strict'
+                )
+            return response
+
         messages.error(self.request, 'CPF ou senha inválidos.')
         return self.form_invalid(form)
 
+
+    # Decode e capt cpf
+    
+    def get(self, request, *args, **kwargs):
+        token = request.COOKIES.get('remember_token')
+        if token:
+            try:
+                payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+                cpf = payload.get('cpf')
+                if cpf:
+                    self.initial = {'cpf': cpf}
+            except jwt.ExpiredSignatureError:
+                print("O token expirou.")
+            except jwt.InvalidTokenError:
+                print("Token inválido.")
+        return super().get(request, *args, **kwargs)
+
+    
 class UserRegistrationView(FormView):
     template_name = 'user/cadastro.html'
     form_class = UserForm
@@ -65,7 +99,7 @@ class UserRegistrationView(FormView):
             PerfilService.create_perfil(perfil_data)
 
             auth_login(self.request, user)
-            return redirect('user:dashboard')
+            return redirect('user:DashboardView')
 
         except ValidationError as ve:
             form.add_error(None, f"Erro de validação: {str(ve)}")
@@ -85,14 +119,18 @@ class UserRegistrationView(FormView):
                 messages.error(self.request, f"{field.capitalize()}: {error}")
         return super().form_invalid(form)
 
-class LogoutView(View):
+class LogoutView(FormView):
     def get(self, request, *args, **kwargs):
+        remember_me = request.COOKIES.get('remember_token')
         logout(request)
+        response = redirect('user:user_login')
+        if not remember_me:
+            response.delete_cookie('remember_token')
         messages.success(request, "Você foi desconectado com sucesso.")
-        return redirect('user:user_login')
+        return response
 
 class DashboardView(LoginRequiredMixin, TemplateView):
-    template_name = 'user/dashboardHome.html'
+    template_name = 'user/dashboardHome.html'   
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -270,3 +308,65 @@ class AgendamentoMensalView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
         return context
+    
+    
+class UploadFotoPerfilView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserForm
+    template_name = 'user/dashboardConta.html'
+    success_url = reverse_lazy('user:dashboardConta')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        for field_name in list(form.fields.keys()):
+            if field_name != 'Image':
+                form.fields.pop(field_name)
+        return form
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Foto de perfil atualizada com sucesso!')
+        return response
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Erro ao atualizar foto de perfil. Verifique o formato e tamanho do arquivo.')
+        return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['perfil'] = self.request.user.perfil
+        context['formPerfil'] = PerfilForm(instance=self.request.user.perfil)
+        return context
+
+    def get_object(self):
+        return self.request.user
+
+class DeleteFotoPerfilView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if user.Image:
+            if os.path.exists(user.Image.path):
+                os.remove(user.Image.path)
+            user.Image = None
+            user.save()
+            messages.success(request, 'Foto de perfil removida com sucesso!')
+        return redirect('user:dashboardConta')
+    
+class UpdateUserAuthView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserAuthForm
+    template_name = 'user/dashboardConf.html'
+    success_url = reverse_lazy('user:update_auth')
+
+    def get_object(self):
+        return self.request.user
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Suas credenciais foram atualizadas com sucesso.')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Erro ao atualizar suas credenciais. Verifique os dados.')
+        return super().form_invalid(form)    
+    
+
