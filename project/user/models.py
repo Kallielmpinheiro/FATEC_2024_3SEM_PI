@@ -37,6 +37,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     gmail = models.EmailField(max_length=100, unique=True)
     telefone = models.CharField(max_length=15)
     dataNascimento = models.DateField(null=True, blank=True)
+    Image = models.ImageField(upload_to='Image', blank=True, null=True)
+
     typeUser = models.CharField(max_length=10, choices=[
         ('Mentor', 'Mentor'),
         ('Mentorado', 'Mentorado')
@@ -56,7 +58,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"id:{self.iduser}, nome: {self.nome}, cpf: {self.cpf}, gmail: {self.gmail}, telefon: {self.telefone}, dataNasc: {self.dataNascimento}, typeUser: {self.typeUser}"
+        return f"id:{self.iduser}, nome: {self.nome}, cpf: {self.cpf}, gmail: {self.gmail}, telefone: {self.telefone}, dataNasc: {self.dataNascimento}, typeUser: {self.typeUser}, Image: {self.foto_perfil}"
 
     class Meta:
         unique_together = ["iduser","gmail","cpf"]
@@ -92,7 +94,6 @@ class Perfil(Document):
             }
         ]
     }
-
 
 class PesquisaHabilidades(Document):
     iduser = IntField()
