@@ -123,7 +123,7 @@ class LogoutView(FormView):
     def get(self, request, *args, **kwargs):
         remember_me = request.COOKIES.get('remember_token')
         logout(request)
-        response = redirect('user:user_login')
+        response = redirect('user:UserLoginView')
         if not remember_me:
             response.delete_cookie('remember_token')
         messages.success(request, "Você foi desconectado com sucesso.")

@@ -1,9 +1,18 @@
 from ..repositories.perfil_repository import PerfilRepository
-
+from user.models import Perfil
 class PerfilService:
+    
     @staticmethod
-    def create_perfil(data):
-        return PerfilRepository.create_perfil(data)
+    def create_perfil(perfil_data):
+        if not Perfil.objects(iduser=perfil_data['iduser']).first():
+            try:
+                perfil = Perfil(**perfil_data)
+                perfil.clean()
+                perfil.save()
+            except Exception as e:
+                raise ValueError(f"Erro ao salvar o perfil: {e}")
+        else:
+            raise ValueError("Perfil já existente para o usuário.")
 
     @staticmethod
     def get_perfil_by_user_id(iduser):
