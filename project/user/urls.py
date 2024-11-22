@@ -10,8 +10,8 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='user/index.html'), name='index'),
 
     # Authentication & Registration
-    path('login/', views.UserLoginView.as_view(), name='user_login'),
-    path('cadastro/', views.UserRegistrationView.as_view(), name='cadastro'),
+    path('login/', views.UserLoginView.as_view(), name='UserLoginView'),
+    path('cadastro/', views.UserRegistrationView.as_view(), name='UserRegistrationView'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
 
     # Dashboard & Profile Views

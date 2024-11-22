@@ -51,7 +51,7 @@
     <button id="chat-message-submit">Enviar</button>
 
     <script>
-        const salaId = "{{ room.sala_id }}"; 
+        const salaId = "{{ room.salaId }}"; 
         const wsUrl = `ws://${window.location.hostname}:8001/ws/chat/${salaId}/`;
         const chatSocket = new WebSocket(wsUrl);
 
@@ -74,7 +74,7 @@
             
             chatSocket.send(JSON.stringify({
                 'mensagem': message,
-                'remetente': "{{ request.user.cpf }}"
+                'remetente': "{{ request.user.nome }}"
             }));
             messageInput.value = '';
         };

@@ -8,8 +8,8 @@ import logging
 class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        self.sala_id = self.scope['url_route']['kwargs']['sala_id']
-        self.room_group_name = f'chat_{self.sala_id}'
+        self.salaId = self.scope['url_route']['kwargs']['salaId']
+        self.room_group_name = f'chat_{self.salaId}'
 
         await self.channel_layer.group_add(
             self.room_group_name,
@@ -53,7 +53,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def save_message(self, sender, message):
         try:
-            room = Room.objects.get(sala_id=self.sala_id)
+            room = Room.objects.get(salaId=self.salaId)
             timestamp = datetime.now(pytz.timezone('America/Sao_Paulo')).isoformat()
             nova_mensagem = {
                 'sender': sender,
@@ -62,8 +62,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             }
             room.mensagens.append(nova_mensagem)
             room.save()
-            print(f"Mensagem salva com sucesso na sala {self.sala_id}")
+            print(f"Mensagem salva com sucesso na sala {self.salaId}")
         except Room.DoesNotExist:
-            logging.error(f"Erro: Sala com sala_id {self.sala_id} não encontrada.")
+            logging.error(f"Erro: Sala com salaId {self.salaId} não encontrada.")
         except Exception as e:
             logging.error(f"Erro ao salvar a mensagem no MongoDB: {str(e)}")
