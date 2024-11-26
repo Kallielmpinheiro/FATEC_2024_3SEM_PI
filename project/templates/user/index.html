@@ -15,6 +15,7 @@
 
 <body>
   <main class="apresentacao">
+
     <div class="center">
       </a>
       <div class="">
@@ -27,57 +28,69 @@
       <nav class="menu" id="menu">
         <ul>
           <li class="menu__li">
-            <a href="{% url 'user:UserLoginView' %}" class="menu__link">Entrar</a>
+            <a href="{% url 'user:UserLoginView' %}" class="menu__link"
+              style="display:inline-block;background-color:black;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;font-weight:bold;transition:background-color 0.3s ease, transform 0.3s ease;"
+              onmouseover="this.style.backgroundColor='#333';this.style.transform='scale(1.05)';"
+              onmouseout="this.style.backgroundColor='black';this.style.transform='scale(1)';">Entrar</a>
           </li>
         </ul>
       </nav>
       <div class="clear"></div>
-      <section class="apresentacao__box">
-        <div class="apresentacao__descricao">
-          <h2 class="title-apresentacao">Inova <strong>Dev</strong> <br>Consultoria</h2>
-          <p class="descricao-apresentacao">Plataforma de mentoria individual para programadores, <br>conectando
-            iniciantes e experientes a especialistas <br>por meio de videochamadas. Focada no aprendizado contínuo,
-            <br>promove uma comunidade colaborativa onde os usuários <br>evoluem suas habilidades com suporte
-            personalizado <br>e interação direta com mentores.</p>
-          <a href="#" class="bt-red">Começe Já</a>
+
+      <section class="apresentacao__box"
+        style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 40px 20px; border-radius: 10px; margin-bottom: 20px;">
+        <div class="apresentacao__descricao" style="max-width: 50%; padding-right: 20px;">
+          <h2 class="title-apresentacao" style="font-size: 2.5rem; font-weight: 700; color: white; line-height: 1.2;">
+            Inova <strong style="color: #8e54e9;">Dev</strong><br>Consultoria</h2>
+          <p class="descricao-apresentacao"
+            style="font-size: 1.1rem; color: #7F8C8D; line-height: 1.6; margin-top: 15px;">
+            Plataforma de mentoria individual para programadores,<br>
+            conectando iniciantes e experientes a especialistas<br>
+            por meio de videochamadas. Focada no aprendizado contínuo,<br>
+            promove uma comunidade colaborativa onde os usuários<br>
+            evoluem suas habilidades com suporte personalizado<br>
+            e interação direta com mentores.
+          </p>
+          <a href="#" class="bt-red">
+            Comece Já
+          </a>
         </div>
-        <div class="apresentacao__video">
-          <img src="././static/img/videoprinc.png" alt="" class="img-responsiva">
+        <div class="apresentacao__video" style="max-width: 45%; border-radius: 15px; overflow: hidden;">
+          <img src="././static/img/videoprinc.png" alt="" class="img-responsiva"
+            style="width: 100%; height: auto; object-fit: cover;">
         </div>
+      </section>
+
+      <section class="icones" style="margin-top: -120px;">
+        <center>
+          <div class="box-wrapper">
+            <div class="box-icone">
+              <img src="./static/img/device.png" alt="">
+            </div>
+            <h6 class="box-icone__titulo">Acesse em qualquer lugar</h6>
+          </div>
+          <div class="box-wrapper">
+            <div class="box-icone box-icone--red">
+              <img src="./static/img/horario.png" alt="">
+            </div>
+            <h6 class="box-icone__titulo">Horário Flexível</h6>
+          </div>
+          <div class="box-wrapper">
+            <div class="box-icone">
+              <img src="./static/img/icone-3.png" alt="">
+            </div>
+            <h6 class="box-icone__titulo">Aprendizado <br>Continuo.</h6>
+          </div>
+          <div class="box-wrapper">
+            <div class="box-icone">
+              <img src="./static/img/acesso.png" alt="">
+            </div>
+            <h6 class="box-icone__titulo">Comunidade Colaborativa</h6>
+          </div>
+        </center>
         <div class="clear"></div>
       </section>
 
-      <section class="icones">
-        <div class="box-wrapper">
-          <div class="box-icone">
-            <img src="./static/img/device.png" alt="">
-          </div>
-          <h6 class="box-icone__titulo">Acesse em qualquer lugar</h6>
-          <p class="box-icone__texto">Tenha a liberdade de <br>aprender em qualquer lugar</p>
-        </div>
-        <div class="box-wrapper">
-          <div class="box-icone box-icone--red">
-            <img src="./static/img/horario.png" alt="">
-          </div>
-          <h6 class="box-icone__titulo">Horário Flexível</h6>
-          <p class="box-icone__texto">Aprenda a <br>qualquer hora.</p>
-        </div>
-        <div class="box-wrapper">
-          <div class="box-icone">
-            <img src="./static/img/icone-3.png" alt="">
-          </div>
-          <h6 class="box-icone__titulo">Aprendizado <br>Continuo.</h6>
-          <p class="box-icone__texto">Sempre atualize <br>seu aprendizado.</p>
-        </div>
-        <div class="box-wrapper">
-          <div class="box-icone">
-            <img src="./static/img/acesso.png" alt="">
-          </div>
-          <h6 class="box-icone__titulo">Comunidade Colaborativa</h6>
-          <p class="box-icone__texto">Compartilhe conhecimentos, habilidades <br>para alcançar suas metas.</p>
-        </div>
-        <div class="clear"></div>
-      </section>
     </div>
 
     <section class="" id="about">
@@ -139,63 +152,91 @@
 
     </section>
 
-    <section class="testimonial">
-      <div class="center">
-        <div class="box-testemunha">
-          <h2 class="titulo-testemunhas">Depoimento</h2>
-          <h5 class="subtitulo-testemunhas">"Histórias de sucesso dos nossos programadores"</h5>
-
+    <section class="testimonial" style="margin-top: -280px;">
+      <div class="center"
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px;">
+        <!-- Título e subtítulo -->
+        <div class="testimonial-header" style="margin-bottom: 30px;">
+          <h2 class="testimonial-title" style="font-size: 2rem; font-weight: 600; color: #333; margin-bottom: 10px;">
+            Depoimentos</h2>
+          <h5 class="testimonial-subtitle" style="font-size: 1.2rem; font-weight: 400; color: #666;">"Histórias de
+            sucesso dos nossos programadores"</h5>
         </div>
 
-        <div class="swiper-container swiper-container-testemunhas">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide box-testemunha">
-              <div class="testemunha-imagem">
-                <img src="{% static 'img/john-doe.png' %}" alt="">
+        <!-- Swiper Container -->
+        <div class="swiper-container testimonial-swiper" style="overflow: hidden; border-radius: 10px;">
+          <div class="swiper-wrapper" style="display: flex; justify-content: center; gap: 30px;">
+            <!-- Testemunha 1 -->
+            <div class="swiper-slide testimonial-box"
+              style="width: 300px; height: 400px; transition: transform 0.3s ease-in-out;">
+              <div class="testimonial-card"
+                style="background-color: #fff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); overflow: hidden; height: 100%; display: flex; flex-direction: column;">
+                <div class="testimonial-image" style="position: relative; height: 200px;">
+                  <img src="{% static 'img/john-doe.png' %}" alt="Luiz Henrique"
+                    style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+                <div class="testimonial-content" style="padding: 20px; flex-grow: 1;">
+                  <span class="testimonial-name" style="font-size: 1.1rem; font-weight: 600; color: #333;">Luiz
+                    Henrique</span>
+                  <span class="testimonial-role"
+                    style="display: block; font-size: 1rem; color: #888; margin-bottom: 15px;">Front-End</span>
+                  <p class="testimonial-text" style="font-size: 0.9rem; color: #555; line-height: 1.5;">“A plataforma
+                    transformou minha carreira como programador! A possibilidade de conversar diretamente com
+                    especialistas e receber feedback personalizado.”</p>
+                </div>
               </div>
-              <span class="testemunha-nome">Luiz Henrique</span>
-              <span class="testemunha-profissao">Front-End</span>
-              <p class="testemunha-texto">“A plataforma transformou minha carreira como programador! A possibilidade de
-                conversar <br>diretamente com especialistas e receber feedback personalizado”</p>
             </div>
-            <div class="swiper-slide box-testemunha">
-              <div class="testemunha-imagem">
-                <img src="{% static 'img/john-doe.png' %}" alt="">
+
+            <!-- Testemunha 2 -->
+            <div class="swiper-slide testimonial-box"
+              style="width: 300px; height: 400px; transition: transform 0.3s ease-in-out;">
+              <div class="testimonial-card"
+                style="background-color: #fff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); overflow: hidden; height: 100%; display: flex; flex-direction: column;">
+                <div class="testimonial-image" style="position: relative; height: 200px;">
+                  <img src="{% static 'img/john-doe.png' %}" alt="Jonathan"
+                    style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+                <div class="testimonial-content" style="padding: 20px; flex-grow: 1;">
+                  <span class="testimonial-name"
+                    style="font-size: 1.1rem; font-weight: 600; color: #333;">Jonathan</span>
+                  <span class="testimonial-role"
+                    style="display: block; font-size: 1rem; color: #888; margin-bottom: 15px;">Java-Developer</span>
+                  <p class="testimonial-text" style="font-size: 0.9rem; color: #555; line-height: 1.5;">“Como iniciante,
+                    eu estava perdido em meio a tantas informações. A mentoria individual me deu a orientação necessária
+                    e um plano de aprendizado claro. Agora, me sinto mais confiante.”</p>
+                </div>
               </div>
-              <span class="testemunha-nome">Jonathan</span>
-              <span class="testemunha-profissao">Java-Developer</span>
-              <p class="testemunha-texto">“Como iniciante, eu estava perdido em meio a tantas informações. A mentoria
-                individual me deu a orientação necessária e um plano de aprendizado claro. <br>Agora, me sinto mais
-                confiante”</p>
             </div>
-            <div class="swiper-slide box-testemunha">
-              <div class="testemunha-imagem">
-                <img src="{% static 'img/john-doe.png' %}" alt="">
+
+            <!-- Testemunha 3 -->
+            <div class="swiper-slide testimonial-box"
+              style="width: 300px; height: 400px; transition: transform 0.3s ease-in-out;">
+              <div class="testimonial-card"
+                style="background-color: #fff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); overflow: hidden; height: 100%; display: flex; flex-direction: column;">
+                <div class="testimonial-image" style="position: relative; height: 200px;">
+                  <img src="{% static 'img/john-doe.png' %}" alt="Kalliel"
+                    style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+                <div class="testimonial-content" style="padding: 20px; flex-grow: 1;">
+                  <span class="testimonial-name"
+                    style="font-size: 1.1rem; font-weight: 600; color: #333;">Kalliel</span>
+                  <span class="testimonial-role"
+                    style="display: block; font-size: 1rem; color: #888; margin-bottom: 15px;">Back-End</span>
+                  <p class="testimonial-text" style="font-size: 0.9rem; color: #555; line-height: 1.5;">“Participar das
+                    sessões de mentoria foi uma das melhores decisões que tomei. A interação direta com mentores
+                    experientes me ajudou a superar obstáculos técnicos e melhorar minhas habilidades rapidamente.”</p>
+                </div>
               </div>
-              <span class="testemunha-nome">Kalliel</span>
-              <span class="testemunha-profissao">Back-End</span>
-              <p class="testemunha-texto">“Participar das sessões de mentoria foi uma das melhores decisões que tomei. A
-                interação direta com mentores experientes me ajudou a superar obstáculos técnicos e <br>melhorar minhas
-                habilidades rapidamente.”</p>
             </div>
-            <div class="swiper-slide box-testemunha">
-              <div class="testemunha-imagem">
-                <img src="{% static 'img/john-doe.png' %}" alt="">
-              </div>
-              <span class="testemunha-nome">Marco</span>
-              <span class="testemunha-profissao">Full-Stack</span>
-              <p class="testemunha-texto">“A plataforma não só me conectou com mentores excelentes, mas também me
-                proporcionou uma rede de colegas programadores com quem pude compartilhar experiências e <br> aprender
-                ainda mais. Foi um divisor de águas para minha carreira.”</p>
-            </div>
+
           </div>
-
         </div>
-        <div class="swiper-pagination swiper-pagination-testemunhas"></div>
 
+        <!-- Swiper Pagination -->
+        <div class="swiper-pagination testimonial-pagination"></div>
       </div>
-
     </section>
+
 
     <section class="our-story">
       <div class="center">
@@ -211,7 +252,8 @@
                 Focamos no <b>aprendizado contínuo</b> e na <b>comunidade colaborativa</b>, oferecendo <b>suporte
                   personalizado</b> para o desenvolvimento de habilidades e avanço profissional.<br>
                 Nossa missão é facilitar o crescimento dos programadores, proporcionando uma experiência interativa e de
-                alta qualidade.</p>
+                alta qualidade.
+              </p>
             </div>
 
           </div>
@@ -269,6 +311,8 @@
         </div>
       </div>
     </section>
+
+    
     <footer class="footer">
       <div class="center">
         <div class="footer__box">
@@ -317,6 +361,7 @@
   <script type="text/javascript" src="{% static '/js/posts.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/home.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/menu.js' %}"></script>
+
 </body>
 
 </html>

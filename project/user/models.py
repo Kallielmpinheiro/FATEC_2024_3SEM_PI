@@ -58,7 +58,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"id:{self.iduser}, nome: {self.nome}, cpf: {self.cpf}, gmail: {self.gmail}, telefone: {self.telefone}, dataNasc: {self.dataNascimento}, typeUser: {self.typeUser}, Image: {self.foto_perfil}"
+        return f"id:{self.iduser}, nome: {self.nome}, cpf: {self.cpf}, gmail: {self.gmail}, telefone: {self.telefone}, dataNasc: {self.dataNascimento}, typeUser: {self.typeUser}"
 
     class Meta:
         unique_together = ["iduser","gmail","cpf"]
