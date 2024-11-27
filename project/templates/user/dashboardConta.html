@@ -85,16 +85,16 @@
                                         <form method="post" enctype="multipart/form-data" action="{% url 'user:UploadFotoPerfilView' %}" class="d-inline">
                                             {% csrf_token %}
                                             <input type="file" id="id_Image" name="Image" class="d-none">
-                                            <label for="id_Image" class="btn btn-light text-primary mb-2">
-                                                <i class="ti ti-upload"></i> Alterar Foto
+                                            <label for="id_Image" class="btn btn-light text-primary mb-1">
+                                                <i class="fas fa-upload"> </i> Upload
                                             </label>
-                                            <button type="submit" class="btn btn-primary">Enviar</button>
+                                            <button type="submit" class="btn btn-primary mb-1">Enviar</button>
                                         </form>
                                     </div>
                                     <div class="profile-btn text-center">
                                         <form method="post" enctype="multipart/form-data" action="{% url 'user:DeleteFotoPerfilView' %}" class="d-inline">
                                             {% csrf_token %}
-                                            <button type="submit" class="btn btn-primary">Remove</button>
+                                            <button type="submit" class="btn btn-primary mt-2">Remover</button>
                                         </form>
                                     </div>
                                 </div>
