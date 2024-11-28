@@ -53,12 +53,16 @@
                                         <a class="nav-link active" data-toggle="tab" href="#profile"
                                             role="tab">Perfil</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}" class="nav-link">Iniciar Chat</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#agendar-mentoria" role="tab">Agendar Mentoria</a>
-                                    </li>
+                                   
+                                    {% if perfil.typeUser != 'Mentorado'  %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}" class="nav-link">Iniciar Chat</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#agendar-mentoria" role="tab">Agendar Mentoria</a>
+                                        </li>
+                                    {% endif %}
+                                    
                                 </ul>
                                 <div class="tab-content px-3 px-xl-5">
                                     <!-- Profile Tab -->
@@ -101,6 +105,17 @@
                                                     Inicial - {{ horarios.horarioInicial }} </br>
                                                     Final - {{ horarios.horarioFinal }}
                                                 </p>
+                                            </div>
+                                        {% endif %}
+                                        <br/>
+                                        <br/>
+                                        <br/>
+
+                                        {% if perfil.typeUser != 'Mentorado'  %}
+                                            <div class="col-xl-9">
+                                                <div class="event-calendar">
+                                                    <div id="event-calendar"></div>
+                                                </div>
                                             </div>
                                         {% endif %}
 

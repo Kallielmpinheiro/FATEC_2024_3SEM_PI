@@ -27,7 +27,7 @@
                             <div class="input-square">
                                 {{ field }}
                             </div>
-                            <div class="error-message" id="error-{{ field.name }}"></div>
+                            <div class="error-message" id="error-{{ field.name }}"> {{ field.errors }} </div>
                         </div>
                     {% endfor %}
                     <button type="submit" class="btn-login">Cadastrar-se</button>

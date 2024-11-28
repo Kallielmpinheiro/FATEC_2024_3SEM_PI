@@ -66,7 +66,6 @@
                                             <td> {{ perfil.nivelExperiencia |default:"Não informado" }}</td>
                                             <td>{{ perfil.areaAtuacao | default:"Não informado"}}</td>
                                             <td>{{ perfil.typeUser | default:"Não informado"}}</td>
-
                                             <td role="cell">
                                                 <div style="display: flex; align-items: center;">
                                                     <!-- Ícone de Perfil -->
@@ -77,14 +76,16 @@
                                                        onmouseout="this.style.color='#5530f7'">
                                                         <i class="fa fa-user-circle fa-lg"></i>
                                                     </a>
-                                                    <!-- Ícone de Mensagem -->
-                                                    <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}" 
-                                                       style="color: #5530f7; text-decoration: none; transition: color 0.3s ease;" 
-                                                       title="Iniciar Chat"
-                                                       onmouseover="this.style.color='#6c63ff'" 
-                                                       onmouseout="this.style.color='#5530f7'">
-                                                        <i class="fa fa-envelope fa-lg"></i>
-                                                    </a>
+                                                    {% if user.typeUser == 'Mentorado' %}
+                                                        <!-- Ícone de Mensagem -->
+                                                        <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}" 
+                                                        style="color: #5530f7; text-decoration: none; transition: color 0.3s ease;" 
+                                                        title="Iniciar Chat"
+                                                        onmouseover="this.style.color='#6c63ff'" 
+                                                        onmouseout="this.style.color='#5530f7'">
+                                                            <i class="fa fa-envelope fa-lg"></i>
+                                                        </a>
+                                                    {% endif %}
                                                 </div>
                                             </td>
                                         </tr>

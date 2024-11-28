@@ -170,15 +170,9 @@
                                         
                       
 
-                            <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false"><i
+                            <li><a  href="{% url 'user:dashAgendamento' %}" aria-expanded="false"><i
                                         class="nav-icon ti ti-calendar"></i><span
-                                        class="nav-title">Agendamento</span></a>
-                                <ul aria-expanded="false">
-                                    <li> <a href='{% url "user:agendamentoMensal" %}'>Mês</a> </li> 
-                                    <li> <a href='{% url "user:agendamentoSemanal" %}'>Semanal</a> </li> 
-                                </ul>
-
-
+                                        class="nav-title">Mentorias Agendadas</span></a>
                             </li>
 
                             <li><a href="{% url 'user:dashboardConta' %}" aria-expanded="false"><i
