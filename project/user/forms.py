@@ -232,6 +232,11 @@ class UserAuthForm(UserForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['cpf'].widget.attrs['readonly'] = True
+        for field_name, field in self.fields.items():
+            if 'class' in field.widget.attrs:
+                field.widget.attrs['class'] += ' form-control'
+            else:
+                field.widget.attrs['class'] = 'form-control'
 
     def clean(self):
         cleaned_data = super().clean()
@@ -252,6 +257,7 @@ class UserAuthForm(UserForm):
         return user
     
 class AgendamentoForm(forms.Form):
+
     TIME_CHOICES = timeChoices()
 
     dataHoraInicial = forms.DateTimeField(

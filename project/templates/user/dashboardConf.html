@@ -1,5 +1,6 @@
-
-{% block blockname %}
+{% extends "user/dashboardBase.html" %}
+{% load static %}
+{% block content %}
 
 <div class="row">
     <div class="col-md-12 m-b-30">
@@ -8,12 +9,20 @@
             <h2>Atualizar Informações de Autenticação</h2>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {% for field in form %}
+                        <div class="input-field">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            <div class="input-square">
+                                {{ field }}
+                            </div>
+                            <div class="error-message" id="error-{{ field.name }}"> {{ field.errors }} </div>
+                        </div>
+                {% endfor %}
+                <br>
                 <button type="submit" class="btn btn-primary">Salvar Alterações</button>
             </form>
-            <a href="{% url 'user:DashboardView' %}" class="btn btn-secondary mt-2">Voltar</a>
         </div>
     </div>
 </div>
-{% endblock blockname %}
+{% endblock content %}
     
