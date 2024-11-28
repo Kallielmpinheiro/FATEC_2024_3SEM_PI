@@ -292,24 +292,7 @@ class DashboardChatView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
         return context
-
-class AgendamentoSemanalView(LoginRequiredMixin, TemplateView):
-    template_name = 'scheduling/agendamentoSemanal.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user'] = self.request.user
-        return context
-
-class AgendamentoMensalView(LoginRequiredMixin, TemplateView):
-    template_name = 'scheduling/agendamentoMes.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user'] = self.request.user
-        return context
-    
-    
+      
 class UploadFotoPerfilView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserForm
@@ -370,3 +353,11 @@ class UpdateUserAuthView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)    
     
 
+class Agendamento(LoginRequiredMixin, TemplateView):
+    template_name = 'user/dashAgenda.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        # context['formPerfil'] = context['form']
+        return context

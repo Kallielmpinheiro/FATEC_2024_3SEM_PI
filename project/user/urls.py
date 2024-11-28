@@ -22,8 +22,6 @@ urlpatterns = [
     path('dashboard/Image/', views.UploadFotoPerfilView.as_view(), name='UploadFotoPerfilView'),
     path('dashboard/deleteImage/', views.DeleteFotoPerfilView.as_view(), name='DeleteFotoPerfilView'),
     path('dashboard/update_auth/', views.UpdateUserAuthView.as_view(), name='UpdateUserAuthView'),
-
+    path('dashboard/agendamento/', views.Agendamento.as_view(), name='dashAgendamento'),
     path('dashboard/chat/', views.DashboardChatView.as_view(), name='dashboardChat'),
-    path('dashboard/agendamentosemanal/', views.AgendamentoSemanalView.as_view(), name='agendamentoSemanal'),
-    path('dashboard/agendamentomensal/', views.AgendamentoMensalView.as_view(), name='agendamentoMensal'),
 ]

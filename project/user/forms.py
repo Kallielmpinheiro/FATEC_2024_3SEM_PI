@@ -1,10 +1,13 @@
 from django import forms
+
+from helpers.hours import timeChoices
 from .models import User, Perfil
 from django.forms import PasswordInput
 from datetime import time, timedelta
 from django.core.exceptions import ValidationError
 from django.core.files.images import get_image_dimensions
-    
+from .choices import SKILLS_CHOICES
+
 class UserForm(forms.ModelForm):
     error_messages = {
         'nome': {
@@ -160,59 +163,12 @@ class PerfilForm(forms.Form): # MongoDB
         , required=False
     )
 
-    SKILLS_CHOICES = [
-        ('python', 'Python'),
-        ('java', 'Java'),
-        ('javascript', 'JavaScript'),
-        ('csharp', 'C#'),
-        ('ruby', 'Ruby'),
-        ('php', 'PHP'),
-        ('html', 'HTML'),
-        ('css', 'CSS'),
-        ('typescript', 'TypeScript'),
-        ('go', 'Go'),
-        ('swift', 'Swift'),
-        ('kotlin', 'Kotlin'),
-        ('r', 'R'),
-        ('scala', 'Scala'),
-        ('perl', 'Perl'),
-        ('lua', 'Lua'),
-        ('sql', 'SQL'),
-        ('bash', 'Bash'),
-        ('powershell', 'PowerShell'),
-        ('rust', 'Rust'),
-        ('haskell', 'Haskell'),
-        ('dart', 'Dart'),
-        ('elixir', 'Elixir'),
-        ('clojure', 'Clojure'),
-        ('fsharp', 'F#'),
-        ('objectivec', 'Objective-C'),
-        ('matlab', 'MATLAB'),
-        ('assembly', 'Assembly'),
-        ('vba', 'VBA'),
-        ('fortran', 'Fortran'),
-        ('cobol', 'COBOL'),
-        ('groovy', 'Groovy'),
-        ('julia', 'Julia'),
-        ('tcl', 'Tcl'),
-        ('scheme', 'Scheme'),
-        ('erlang', 'Erlang'),
-        ('nim', 'Nim'),
-        ('solidity', 'Solidity'),
-        ('ada', 'Ada'),
-        ('prolog', 'Prolog'),
-        ('vbnet', 'VB.NET'),
-        ('delphi', 'Delphi'),
-        ('sml', 'Standard ML'),
-    ]
-
     habilidades = forms.MultipleChoiceField(
         choices=SKILLS_CHOICES,
         widget=forms.SelectMultiple(
             attrs={"id": "skills"}
         ), required=False
     )
-
 
     diasAtendimento = forms.MultipleChoiceField(
         choices= [ 
@@ -232,8 +188,8 @@ class PerfilForm(forms.Form): # MongoDB
         required=False
     )
  
-    TIME_CHOICES = [(time(hour, minute).strftime('%H:%M'), time(hour, minute).strftime('%H:%M'))
-                    for hour in range(0, 24) for minute in [0, 30]]
+    TIME_CHOICES = timeChoices()
+
 
     horaInicio =  forms.ChoiceField(
         choices=TIME_CHOICES, 
@@ -294,3 +250,30 @@ class UserAuthForm(UserForm):
         if commit:
             user.save()
         return user
+    
+class AgendamentoForm(forms.Form):
+    TIME_CHOICES = timeChoices()
+
+    dataHoraInicial = forms.DateTimeField(
+        label="Data e hora inicial da Mentoria",
+        widget=forms.DateTimeInput(
+            attrs={
+                "type": "datetime-local",  
+                "class": "form-control",
+                "step": "3600",  
+            }
+        ),  
+        input_formats=["%Y-%m-%dT%H:%M"],
+    )
+
+    dataHoraFinal = forms.DateTimeField(
+        label="Data e hora final da Mentoria",
+        widget=forms.DateTimeInput(
+            attrs={
+                "type": "datetime-local",  
+                "class": "form-control",
+                 "step": "3600",
+            }
+        ),  
+        input_formats=["%Y-%m-%dT%H:%M"],  
+    )
