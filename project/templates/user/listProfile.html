@@ -17,7 +17,6 @@
                             <li class="breadcrumb-item">
                                 <a href="{% url 'user:DashboardView' %}"><i class="ti ti-home"></i></a>
                             </li>
-
                             <li class="breadcrumb-item active text-primary" aria-current="page">
                                 Mentoria</li>
                         </ol>
@@ -28,80 +27,44 @@
         </div>
     </div>
     <!-- end row -->
-    <!-- start-mentores contant-->
+
+    <!-- start-mentores content-->
     <div class="row">
-        <div class="col-12">
-            <div class="card card-statistics clients-contant">
-                <div class="card-header">
-                    <div class="d-xxs-flex justify-content-between align-items-center">
-                        <div class="card-heading">
-                            <h4 class="card-title"></h4>
+        {% if perfis %}
+            {% for perfil in perfis %}
+                {% if user.iduser != perfil.iduser %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-lg" style="border-radius: 15px;">
+                            <img src="{% static 'img/user.png' %}" class="card-img-top" alt="Imagem do Perfil" 
+                                 style="max-width: 150px; max-height: 150px; object-fit: cover; margin: 0 auto; margin-top: 10px;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ perfil.nome }}</h5>
+                                <p class="card-text">
+                                    <strong>Experiência:</strong> {{ perfil.nivelExperiencia|default:"Não informado" }} <br>
+                                    <strong>Área de Atuação:</strong> {{ perfil.areaAtuacao|default:"Não informado" }} <br>
+                                    <strong>Status:</strong> {{ perfil.typeUser|default:"Não informado" }}
+                                </p>
+                                <div class="d-flex justify-content-between">
+                                    <a href="{% url 'user:profile' id=perfil.iduser %}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fa fa-user-circle"></i> Visualizar
+                                    </a>
+                                    {% if user.typeUser == 'Mentorado' %}
+                                        <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fa fa-envelope"></i> Mensagem
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
-
                     </div>
-                </div>
-                <div class="card-body py-0 table-responsive">
-                    <table class="table clients-contant-table mb-0">
-                        <thead>
-                            <tr>
-                                <th scope="col">Nome</th>
-                                <th scope="col">Experiencia</th>
-                                <th scope="col">Área de Atuação</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Ações</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if perfis %}
-                                {% for perfil in perfis %}
-                                    {%if user.iduser != perfil.iduser%}
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-
-                                                    <p class="font-weight-bold">{{ perfil.nome}} </p>
-                                                </div>
-                                            </td>
-                                            <td> {{ perfil.nivelExperiencia |default:"Não informado" }}</td>
-                                            <td>{{ perfil.areaAtuacao | default:"Não informado"}}</td>
-                                            <td>{{ perfil.typeUser | default:"Não informado"}}</td>
-                                            <td role="cell">
-                                                <div style="display: flex; align-items: center;">
-                                                    <!-- Ícone de Perfil -->
-                                                    <a href="{% url 'user:profile' id=perfil.iduser %}" 
-                                                       style="color: #5530f7; text-decoration: none; margin-right: 10px; transition: color 0.3s ease;" 
-                                                       title="Visualizar Perfil"
-                                                       onmouseover="this.style.color='#6c63ff'" 
-                                                       onmouseout="this.style.color='#5530f7'">
-                                                        <i class="fa fa-user-circle fa-lg"></i>
-                                                    </a>
-                                                    {% if user.typeUser == 'Mentorado' %}
-                                                        <!-- Ícone de Mensagem -->
-                                                        <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}" 
-                                                        style="color: #5530f7; text-decoration: none; transition: color 0.3s ease;" 
-                                                        title="Iniciar Chat"
-                                                        onmouseover="this.style.color='#6c63ff'" 
-                                                        onmouseout="this.style.color='#5530f7'">
-                                                            <i class="fa fa-envelope fa-lg"></i>
-                                                        </a>
-                                                    {% endif %}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    {%endif%}
-                                {% endfor %}
-                            {% else %}
-                            <tr>
-                                <td colspan="5">Nenhum perfil encontrado.</td>
-                            </tr>
-                            {% endif %}
-
-                        </tbody>
-                    </table>
-                </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <p>Nenhum perfil encontrado.</p>
             </div>
-        </div>
+        {% endif %}
     </div>
+    <!-- end-mentores content -->
 </div>
 {% endblock content %}
