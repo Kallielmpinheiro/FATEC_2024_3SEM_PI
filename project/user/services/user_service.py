@@ -1,4 +1,5 @@
 from ..repositories.user_repository import UserRepository
+from user.models import Agendamento
 from django.contrib.auth import authenticate
 
 class UserService:
@@ -14,3 +15,14 @@ class UserService:
     @staticmethod
     def check_user_exists(cpf):
         return UserRepository.user_existy(cpf)
+    
+    @staticmethod   
+    def get_user_by_id(id):
+        return UserRepository.get_user_by_id(id)
+    
+    @staticmethod
+    def create_meeting(data):
+        print(data)
+        agendamento = UserRepository.create_meeting(data)
+        print(agendamento)
+        return agendamento

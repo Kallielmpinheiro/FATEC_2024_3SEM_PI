@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.forms import DateTimeField
-from mongoengine import Document, StringField, ListField, DictField, IntField , ValidationError
+from mongoengine import Document, StringField, ListField, DictField, IntField , ValidationError,DateTimeField
 
 from django.db.models import Max
 
@@ -101,3 +101,14 @@ class PesquisaHabilidades(Document):
 
     def __str__(self):
         return super().__str__()
+    
+class Agendamento(Document):
+    iduserMentor = IntField(required=True)
+    iduserMentorado = IntField(required=True)
+    dataHoraInicial = DateTimeField(required=True)
+    dataHoraFinal = DateTimeField(required=True)
+    linkReuniao = StringField(max_length=255)
+
+    def __str__(self):
+        return f"Agendamento(Mentor: {self.iduserMentor}, Mentorado: {self.iduserMentorado}, " \
+               f"Início: {self.dataHoraInicial}, Fim: {self.dataHoraFinal}, Link: {self.linkReuniao})"

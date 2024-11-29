@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
-from .forms import LoginForm, UserForm, PerfilForm, UserAuthForm
+from .forms import AgendamentoForm, LoginForm, UserForm, PerfilForm, UserAuthForm
 from .choices import SKILLS_CHOICES
 from .services.user_service import UserService
 from .services.perfil_service import PerfilService
@@ -250,17 +250,18 @@ class MentorProfileListView(LoginRequiredMixin, ListView):
         return perfils
     
 
-class MentorProfileDetailView(LoginRequiredMixin, DetailView):
+class MentorProfileDetailView(LoginRequiredMixin, DetailView, FormView):
     template_name = 'user/profile.html'
     context_object_name = 'perfil'
+    form_class = AgendamentoForm
 
     def get_object(self):
-        
         iduser = self.kwargs.get('id')
-     
+
         return PerfilService.get_perfil_by_user_id(iduser)
 
     def get_context_data(self, **kwargs):
+        iduser = self.kwargs.get('id')
         dias_semana = {
             '1': 'Domingo',
             '2': 'Segunda-feira',
@@ -282,9 +283,25 @@ class MentorProfileDetailView(LoginRequiredMixin, DetailView):
                     self.object.horariosDisponiveis[1]['atende'] if self.object.horariosDisponiveis else '' 
             )
         )
+        context['dados']=UserService.get_user_by_id(iduser)
         print(context)
         return context
-
+    
+    def form_valid(self, form):
+        data = form.cleaned_data
+        print(data)
+        idMentor = self.kwargs.get('id')
+        meeting = {
+            'iduserMentor': idMentor,
+            'iduserMentorado': self.request.user.iduser,
+            'dataHoraInicial': data['dataHoraInicial'],
+            'dataHoraFinal': data['dataHoraFinal'],
+            'linkReuniao': ''
+        }
+        print(meeting)
+        UserService.create_meeting(meeting)
+        return redirect('user:dashAgendamento')
+        
 class DashboardChatView(LoginRequiredMixin, TemplateView):
     template_name = 'communication/dashboardChat.html'
 
