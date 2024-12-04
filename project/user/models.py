@@ -107,8 +107,7 @@ class Agendamento(Document):
     iduserMentorado = IntField(required=True)
     dataHoraInicial = DateTimeField(required=True)
     dataHoraFinal = DateTimeField(required=True)
-    linkReuniao = StringField(max_length=255)
-
+    
     def __str__(self):
         return f"Agendamento(Mentor: {self.iduserMentor}, Mentorado: {self.iduserMentorado}, " \
                f"Início: {self.dataHoraInicial}, Fim: {self.dataHoraFinal}, Link: {self.linkReuniao})"

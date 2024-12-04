@@ -9,6 +9,10 @@ class UserRepository:
         return user
 
     @staticmethod
+    def count_user(count):
+        return User.objects.all()
+
+    @staticmethod
     def get_user_by_cpf(cpf):
         return User.objects.filter(cpf=cpf).first()
     

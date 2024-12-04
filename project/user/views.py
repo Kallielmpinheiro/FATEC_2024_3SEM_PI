@@ -149,7 +149,14 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             most_searched_skills.append(pesquisa)
 
         context['most_searched_skills'] = most_searched_skills
-                    
+        
+        
+        total_visitors = User.objects.count()
+        context['total_visitors'] = total_visitors
+        
+        agendamentos_count = UserService.get_agendamentos_count()
+        context['agendamentos_count'] = agendamentos_count
+        
         return context
 
 class DashboardContaView(LoginRequiredMixin, FormView):

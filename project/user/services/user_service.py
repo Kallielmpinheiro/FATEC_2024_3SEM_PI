@@ -26,3 +26,11 @@ class UserService:
         agendamento = UserRepository.create_meeting(data)
         print(agendamento)
         return agendamento
+    
+    @staticmethod
+    def get_user_count():
+        return UserRepository.count_users()
+    
+    @staticmethod
+    def get_agendamentos_count():
+        return Agendamento.objects.count()
