@@ -27,7 +27,33 @@ class ViewsTestCase(TestCase):
         self.url = reverse('user:logout')
         self.client.cookies['remember_token'] = 'some_token_value'
 
-
+    def test_TemplateUsed_Index(self):
+        self.assertTemplateUsed('index.html')
+        
+    def test_TemplateUsed_cadastro(self):
+        self.assertTemplateUsed('cadastro.html')
+        
+    def test_TemplateUsed_dashboardBase(self):
+        self.assertTemplateUsed('dashboardBase.html')
+        
+    def test_TemplateUsed_profile(self):
+        self.assertTemplateUsed('profile.html')
+    
+    def test_TemplateUsed_listProfile(self):
+        self.assertTemplateUsed('listProfile.html')
+        
+    def test_TemplateUsed_dashboardHome(self):
+        self.assertTemplateUsed('dashboardHome.html')
+        
+    def test_TemplateUsed_dashboardConfig(self):
+        self.assertTemplateUsed('dashboardConfig.html')
+                
+    def test_TemplateUsed_dashboardAgenda(self):
+        self.assertTemplateUsed('dashboardAgenda.html')
+    
+    def test_TemplateUsed_dashboardConta(self):
+        self.assertTemplateUsed('dashboardConta.html')
+            
     def test_user_login_valid(self):
         response = self.client.post(reverse('user:UserLoginView'), {
             'cpf': '12345678901',
@@ -71,6 +97,30 @@ class ViewsTestCase(TestCase):
             'gmail': 'novo@teste.com',
             'telefone': '123456789',
             'senha': 'nova_senha',
+            'dataNascimento': '2000-01-01',
+            'typeUser': 'Mentorado',
+        })
+        self.assertEqual(response.status_code, 200)
+    
+    def test_invalid_cadastrar_usuario_no_gmail(self):
+        response = self.client.post(reverse('user:UserRegistrationView'), {
+            'nome': 'Novo Usuário',
+            'cpf': '1111111111',
+            'gmail': '',
+            'telefone': '123456789',
+            'senha': 'nova_senha',
+            'dataNascimento': '2000-01-01',
+            'typeUser': 'Mentorado',
+        })
+        self.assertEqual(response.status_code, 200)
+    
+    def test_invalid_cadastrar_usuario_no_senha(self):
+        response = self.client.post(reverse('user:UserRegistrationView'), {
+            'nome': 'Novo Usuário',
+            'cpf': '1111111111',
+            'gmail': '',
+            'telefone': '123456789',
+            'senha': '',
             'dataNascimento': '2000-01-01',
             'typeUser': 'Mentorado',
         })

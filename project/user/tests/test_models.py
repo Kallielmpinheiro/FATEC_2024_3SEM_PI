@@ -7,16 +7,19 @@ class UserManagerTests(TestCase):
 
     def test_create_user_with_valid_data(self):
         user = self.user_manager.create_user(
-            cpf='12345678900',
-            senha='user_password',
-            nome='Usuário Teste',
-            gmail='user@example.com',
-            telefone='123456789'
+            cpf='12345678901',
+            senha='senha_secreta',
+            nome='Teste Usuário',
+            gmail='teste@teste.com',
+            telefone='19991971960',
+            dataNascimento='2004-12-12',
+            typeUser='Mentor',
+            Image=None,
         )
         self.assertIsNotNone(user)
-        self.assertEqual(user.cpf, '12345678900')
-        self.assertEqual(user.nome, 'Usuário Teste')
-        self.assertTrue(user.check_password('user_password'))
+        self.assertEqual(user.cpf, '12345678901')
+        self.assertEqual(user.nome, 'Teste Usuário')
+        self.assertTrue(user.check_password('senha_secreta'))
 
     def test_create_user_without_password(self):
         with self.assertRaises(ValueError) as context:
