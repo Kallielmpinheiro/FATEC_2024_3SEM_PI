@@ -59,14 +59,14 @@
                                             <a href="{% url 'communication:iniciarChat' idMentor=perfil.iduser %}" class="nav-link">Iniciar Chat</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#agendar-mentoria" role="tab">Agendar Mentoria</a>
+                                            <a class="nav-link" data-toggle="tab" href="#agendar" role="tab">Agendar Mentoria</a>
                                         </li>
                                     {% endif %}
                                     
                                 </ul>
                                 <div class="tab-content px-3 px-xl-5">
                                     <!-- Profile Tab -->
-                                    {% comment %} <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                                     <div class="tab-pane fade show active" id="profile" role="tabpanel">
                                         <div class="mt-5">
                                             <h5 class="text-dark mb-4">Sobre</h5>
                                             <p>{{ perfil.sobre |default:"Nenhuma experiência cadastrada." }}</p>
@@ -112,8 +112,9 @@
                                         <br/>
 
 
-                                    </div> {% endcomment %}
-                                    <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                                    </div> 
+
+                                    <div class="tab-pane fade show" id="agendar" role="tabpanel">
                                         <br/>
                                         <br/>
                                         <form method="POST" >
