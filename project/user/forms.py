@@ -257,18 +257,15 @@ class UserAuthForm(UserForm):
         return user
     
 class AgendamentoForm(forms.Form):
-
-    TIME_CHOICES = timeChoices()
-
     dataHoraInicial = forms.DateTimeField(
         label="Data e hora inicial da Mentoria",
         widget=forms.DateTimeInput(
             attrs={
-                "type": "datetime-local",  
+                "type": "datetime-local",
                 "class": "form-control",
-                "step": "3600",  
+                "step": "3600",
             }
-        ),  
+        ),
         input_formats=["%Y-%m-%dT%H:%M"],
     )
 
@@ -276,10 +273,10 @@ class AgendamentoForm(forms.Form):
         label="Data e hora final da Mentoria",
         widget=forms.DateTimeInput(
             attrs={
-                "type": "datetime-local",  
+                "type": "datetime-local",
                 "class": "form-control",
-                 "step": "3600",
+                "step": "3600",
             }
-        ),  
-        input_formats=["%Y-%m-%dT%H:%M"],  
+        ),
+        input_formats=["%Y-%m-%dT%H:%M"],
     )

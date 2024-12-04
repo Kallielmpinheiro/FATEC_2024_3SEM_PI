@@ -15,7 +15,8 @@
                                 <div class="profile-img text-center rounded-circle">
                                     <div class="pt-5">
                                         <div class="bg-img m-auto">
-                                            <img src="{% static 'img/user.png' %}" class="img-fluid" alt="users-avatar">
+                                            {% comment %} <img src="{% static 'img/user.png' %}" class="img-fluid" alt="users-avatar"> {% endcomment %}
+                                            <img style="heigth: 60px;width:60px;" src="{% if dados.Image %}{{ dados.Image.url }}{% else %}{% static 'img/user.png' %}{% endif %}">
                                         </div>
                                         <div class="profile pt-4">
                                             <h4 class="mb-1">{{ perfil.nome }} </h4>
@@ -23,14 +24,13 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <hr class="w-100">
                                 <div class="contact-info pt-4">
                                     <h5 class="text-dark mb-1">Informações de Contato</h5>
                                     <p class="text-dark font-weight-medium pt-4 mb-2">Email</p>
-                                    <p>{{ perfil.gmail |default:"Não informado" }}</p>
+                                    <p>{{ dados.gmail |default:"Não informado" }}</p>
                                     <p class="text-dark font-weight-medium pt-4 mb-2">Telefone</p>
-                                    <p>{{ perfil.telefone|default:"Não informado" }}</p>
+                                    <p>{{ dados.telefone|default:"Não informado" }}</p>
                                     <p class="text-dark font-weight-medium pt-4 mb-2">Área de Atuação</p>
                                     <p>{{ perfil.areaAtuacao|default:"Não informada" }}</p>
                                     <p class="text-dark font-weight-medium pt-4 mb-2">Facebook</p>
@@ -66,7 +66,7 @@
                                 </ul>
                                 <div class="tab-content px-3 px-xl-5">
                                     <!-- Profile Tab -->
-                                    <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                                    {% comment %} <div class="tab-pane fade show active" id="profile" role="tabpanel">
                                         <div class="mt-5">
                                             <h5 class="text-dark mb-4">Sobre</h5>
                                             <p>{{ perfil.sobre |default:"Nenhuma experiência cadastrada." }}</p>
@@ -111,6 +111,28 @@
                                         <br/>
                                         <br/>
 
+
+                                    </div> {% endcomment %}
+                                    <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                                        <br/>
+                                        <br/>
+                                        <form method="POST" >
+                                            {% csrf_token %}
+                                            {% for field in form %}
+                                                <div class="input-field">
+                                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                    <div class="input-square">
+                                                        {{ field }}
+                                                    </div>
+                                                    <div class="error-message" id="error-{{ field.name }}"> {{ field.errors }} </div>
+                                                </div>
+                                            {% endfor %}
+                                            <br/>
+                                            <button type="submit" class="btn btn-primary">Cadastrar-se</button>
+                                        </form>
+                                        <br/>
+                                        <br/>
+
                                         {% if perfil.typeUser != 'Mentorado'  %}
                                             <div class="col-xl-9">
                                                 <div class="event-calendar">
@@ -119,7 +141,7 @@
                                             </div>
                                         {% endif %}
 
-                                    </div>
+                                    </div>  
                                 </div>
                             </div>
                         </div>
