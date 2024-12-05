@@ -171,6 +171,3 @@ SESSION_COOKIE_AGE = 1209600  # 2 semanas
 # Garante que a sessão seja salva apenas quando houver modificações
 SESSION_SAVE_EVERY_REQUEST = False
 AUTH_USER_MODEL = 'user.User'
-
-JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'fds2')
-JWT_EXPIRATION_DELTA = timedelta(weeks=2)

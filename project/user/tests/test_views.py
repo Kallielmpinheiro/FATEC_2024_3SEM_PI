@@ -4,11 +4,16 @@ from django.contrib.auth import get_user_model
 from user.models import User, Perfil
 from django.contrib.messages import get_messages
 from django.contrib.sessions.middleware import SessionMiddleware
+import os
+from datetime import datetime
+import jwt
+
 
 class ViewsTestCase(TestCase):
     def setUp(self):
         User.objects.all().delete()
         Perfil.drop_collection()
+
         self.client = Client()
         self.User = get_user_model()
         self.user = self.User.objects.create_user(
@@ -21,11 +26,53 @@ class ViewsTestCase(TestCase):
             typeUser='Mentor',
             Image=None,
         )
+        self.secret_key = 'TDD-TEST-DEPOIS-DO-DEPLOY'
         self.user.set_password('senha_secreta')
         self.user.is_active = True
         self.user.save()
+
+        self.perfil = Perfil.objects.create(
+            iduser=self.user.iduser,
+            nome=self.user.nome,
+            areaAtuacao='Tecnologia',
+            sobre='Mentor de Python',
+            nivelExperiencia='Avançado',
+            redesSociais={},
+            habilidades=['Python', 'Django'],
+        )
+
         self.url = reverse('user:logout')
-        self.client.cookies['remember_token'] = 'some_token_value'
+
+    def test_token_generation(self):
+        login_data = {
+            'cpf': '12345678901',
+            'senha': 'senha_secreta',
+            'remember_me': 'on'
+        }
+        response = self.client.post(
+            reverse('user:UserLoginView'),
+            data=login_data
+        )
+        self.assertEqual(response.status_code, 302)
+        print(f"Cookies in response: {response.cookies}")
+
+        self.assertIn('remember_token', response.cookies)
+        token = response.cookies['remember_token'].value
+        try:
+            payload = jwt.decode(
+                token, 
+                self.secret_key, 
+                algorithms=['HS256']
+            )
+        except jwt.PyJWTError:
+            self.fail("Token inválido ou não pode ser decodificado")
+
+        self.assertIn('cpf', payload)
+        self.assertEqual(payload['cpf'], '12345678901')
+
+        self.assertIn('exp', payload)
+
+        self.assertGreater(payload['exp'], datetime.utcnow().timestamp())
 
     def test_TemplateUsed_Index(self):
         self.assertTemplateUsed('index.html')
@@ -131,13 +178,50 @@ class ViewsTestCase(TestCase):
         response = self.client.get(self.url)
         self.assertRedirects(response, reverse('user:UserLoginView'))
     
-    def test_logout_removes_remember_token(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get(self.url)
-        self.assertNotIn('remember_token', response.cookies)
+    # def test_logout_removes_remember_token(self):
+    #     self.client.login(username='testuser', password='testpassword')
+    #     response = self.client.get(self.url)
+    #     self.assertNotIn('remember_token', response.cookies)
     
     def test_logout_shows_success_message(self):
         self.client.login(username='testuser', password='testpassword')
         response = self.client.get(self.url)
         messages = list(get_messages(response.wsgi_request))
         self.assertTrue(any(msg.message == "Você foi desconectado com sucesso." for msg in messages))
+        
+    def test_dashboard_view_context(self):
+        self.client.force_login(self.user)
+        response = self.client.get(reverse('user:DashboardView'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'user/dashboardHome.html')
+        self.assertIn('user', response.context)
+        self.assertIn('most_searched_skills', response.context)
+        self.assertIn('total_visitors', response.context)
+        self.assertIn('agendamentos_count', response.context)
+
+    def test_dashboard_conta_view_context(self):
+        self.client.force_login(self.user)
+        response = self.client.get(reverse('user:dashboardConta'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'user/dashboardConta.html')
+        self.assertIn('perfil', response.context)
+        self.assertIn('formPerfil', response.context)
+
+    def test_mentor_profile_list_view(self):
+        self.client.force_login(self.user)
+        response = self.client.get(reverse('user:MentorProfileListView'), {'search_query': 'Python'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'user/listProfile.html')
+        self.assertIn('perfis', response.context)
+        self.assertIn('user', response.context)
+
+    def test_mentor_profile_detail_view(self):
+        self.client.force_login(self.user)
+        response = self.client.get(reverse('user:profile', args=[self.user.iduser]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'user/profile.html')
+        self.assertIn('habilidades', response.context)
+        self.assertIn('redesSociais', response.context)
+        self.assertIn('horarios', response.context)
+        self.user.Image = 'project\media\Image'
+

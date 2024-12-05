@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone,timedelta
 from django.views.generic import FormView, TemplateView, ListView, DetailView, View,UpdateView
 from django.contrib.auth import login as auth_login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,6 +15,7 @@ from django.core.exceptions import ValidationError
 import os
 from django.conf import settings
 import jwt
+from django.utils.timezone import now
 
 connectMongoDB()
 
@@ -24,50 +25,61 @@ class IndexView(TemplateView):
 class UserLoginView(FormView):
     template_name = 'user/login.html'
     form_class = LoginForm
+    success_url = 'user:DashboardView'
+
+    SECRET_KEY = 'TDD-TEST-DEPOIS-DO-DEPLOY'
+
+    def get_initial(self):
+        initial = super().get_initial()
+        token = self.request.COOKIES.get('remember_token')
+        if token:
+            try:
+                payload = jwt.decode(
+                    token, 
+                    self.SECRET_KEY, 
+                    algorithms=['HS256']
+                )
+                cpf = payload.get('cpf')
+                if cpf:
+                    initial['cpf'] = cpf
+            except jwt.ExpiredSignatureError:
+                messages.warning(self.request, 'Sua sessão expirou.')
+            except jwt.InvalidTokenError:
+                messages.error(self.request, 'Sessão inválida.')
+        return initial
 
     def form_valid(self, form):
         cpf = form.cleaned_data.get('cpf')
         senha = form.cleaned_data.get('senha')
         remember_me = self.request.POST.get('remember_me')
-
         user = UserService.authenticate_user(cpf, senha)  
         if user:
             auth_login(self.request, user)
-
             response = redirect('user:DashboardView')
-
             if remember_me == 'on':
-                payload = {
-                    'cpf': cpf,
-                    'exp': datetime.utcnow() + settings.JWT_EXPIRATION_DELTA,  # 2 semanas
-                }
-                token = jwt.encode(payload, settings.JWT_SECRET_KEY, algorithm='HS256')
-
-                response.set_cookie(
-                    'remember_token', token, max_age=1209600, httponly=True, secure=True, samesite='Strict'
-                )
+                try:
+                    payload = {
+                        'cpf': cpf,
+                        'exp': now() + timedelta(weeks=2)
+                    }
+                    token = jwt.encode(
+                        payload, 
+                        self.SECRET_KEY, 
+                        algorithm='HS256'
+                    )
+                    response.set_cookie(
+                        'remember_token', 
+                        token, 
+                        max_age=1209600,  
+                        httponly=True, 
+                        secure=True,
+                        samesite='Strict'
+                    )
+                except Exception as e:
+                    messages.error(self.request, 'Erro ao gerar token de lembrete.')
             return response
-
         messages.error(self.request, 'CPF ou senha inválidos.')
         return self.form_invalid(form)
-
-
-    # Decode e capt cpf
-    
-    def get(self, request, *args, **kwargs):
-        token = request.COOKIES.get('remember_token')
-        if token:
-            try:
-                payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
-                cpf = payload.get('cpf')
-                if cpf:
-                    self.initial = {'cpf': cpf}
-            except jwt.ExpiredSignatureError:
-                print("O token expirou.")
-            except jwt.InvalidTokenError:
-                print("Token inválido.")
-        return super().get(request, *args, **kwargs)
-
     
 class UserRegistrationView(FormView):
     template_name = 'user/cadastro.html'
