@@ -22,6 +22,9 @@
                             </span>
                         </div>
                         <!-- Ajuste da posição do ícone -->
+                        <a href="{% url 'communication:video_call' %}" class="text-primary" style="margin-right: 10px;">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
                         <a href="{% url 'user:MentorProfileListView' %}" class="text-primary" style="margin-right: 10px;">
                             <i class="fas fa-info-circle"></i>
                         </a>
@@ -38,8 +41,6 @@
                                 style="max-width: 75%; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
                                 <strong class="d-block">{{ message.sender }}</strong>
                                 <span>{{ message.content }}</span>
-                                <small class="d-block text-muted mt-2" style="font-size: 0.8rem;">{{
-                                    message.timestamp|date:"d/m/Y H:i" }}</small>
                             </div>
                         </div>
                     </div>

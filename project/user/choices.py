@@ -1,5 +1,3 @@
-# myapp/choices.py
-
 SKILLS_CHOICES = [
     ('python', 'Python'),
     ('java', 'Java'),

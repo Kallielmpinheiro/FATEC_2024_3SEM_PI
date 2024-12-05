@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone,timedelta
 from django.views.generic import FormView, TemplateView, ListView, DetailView, View,UpdateView
 from django.contrib.auth import login as auth_login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,6 +15,8 @@ from django.core.exceptions import ValidationError
 import os
 from django.conf import settings
 import jwt
+from django.utils.timezone import now
+import json
 
 connectMongoDB()
 
@@ -24,50 +26,61 @@ class IndexView(TemplateView):
 class UserLoginView(FormView):
     template_name = 'user/login.html'
     form_class = LoginForm
+    success_url = 'user:DashboardView'
+
+    SECRET_KEY = 'TDD-TEST-DEPOIS-DO-DEPLOY'
+
+    def get_initial(self):
+        initial = super().get_initial()
+        token = self.request.COOKIES.get('remember_token')
+        if token:
+            try:
+                payload = jwt.decode(
+                    token, 
+                    self.SECRET_KEY, 
+                    algorithms=['HS256']
+                )
+                cpf = payload.get('cpf')
+                if cpf:
+                    initial['cpf'] = cpf
+            except jwt.ExpiredSignatureError:
+                messages.warning(self.request, 'Sua sessão expirou.')
+            except jwt.InvalidTokenError:
+                messages.error(self.request, 'Sessão inválida.')
+        return initial
 
     def form_valid(self, form):
         cpf = form.cleaned_data.get('cpf')
         senha = form.cleaned_data.get('senha')
         remember_me = self.request.POST.get('remember_me')
-
         user = UserService.authenticate_user(cpf, senha)  
         if user:
             auth_login(self.request, user)
-
             response = redirect('user:DashboardView')
-
             if remember_me == 'on':
-                payload = {
-                    'cpf': cpf,
-                    'exp': datetime.utcnow() + settings.JWT_EXPIRATION_DELTA,  # 2 semanas
-                }
-                token = jwt.encode(payload, settings.JWT_SECRET_KEY, algorithm='HS256')
-
-                response.set_cookie(
-                    'remember_token', token, max_age=1209600, httponly=True, secure=True, samesite='Strict'
-                )
+                try:
+                    payload = {
+                        'cpf': cpf,
+                        'exp': now() + timedelta(weeks=2)
+                    }
+                    token = jwt.encode(
+                        payload, 
+                        self.SECRET_KEY, 
+                        algorithm='HS256'
+                    )
+                    response.set_cookie(
+                        'remember_token', 
+                        token, 
+                        max_age=1209600,  
+                        httponly=True, 
+                        secure=True,
+                        samesite='Strict'
+                    )
+                except Exception as e:
+                    messages.error(self.request, 'Erro ao gerar token de lembrete.')
             return response
-
         messages.error(self.request, 'CPF ou senha inválidos.')
         return self.form_invalid(form)
-
-
-    # Decode e capt cpf
-    
-    def get(self, request, *args, **kwargs):
-        token = request.COOKIES.get('remember_token')
-        if token:
-            try:
-                payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
-                cpf = payload.get('cpf')
-                if cpf:
-                    self.initial = {'cpf': cpf}
-            except jwt.ExpiredSignatureError:
-                print("O token expirou.")
-            except jwt.InvalidTokenError:
-                print("Token inválido.")
-        return super().get(request, *args, **kwargs)
-
     
 class UserRegistrationView(FormView):
     template_name = 'user/cadastro.html'
@@ -119,7 +132,7 @@ class UserRegistrationView(FormView):
                 messages.error(self.request, f"{field.capitalize()}: {error}")
         return super().form_invalid(form)
 
-class LogoutView(FormView):
+class LogoutView(LoginRequiredMixin,FormView):
     def get(self, request, *args, **kwargs):
         remember_me = request.COOKIES.get('remember_token')
         logout(request)
@@ -149,7 +162,14 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             most_searched_skills.append(pesquisa)
 
         context['most_searched_skills'] = most_searched_skills
-                    
+        
+        
+        total_visitors = User.objects.count()
+        context['total_visitors'] = total_visitors
+        
+        agendamentos_count = UserService.get_agendamentos_count()
+        context['agendamentos_count'] = agendamentos_count
+        
         return context
 
 class DashboardContaView(LoginRequiredMixin, FormView):
@@ -204,9 +224,10 @@ class DashboardContaView(LoginRequiredMixin, FormView):
             user = self.request.user
             user.nome = perfil_data['nome']
             user.save()
-            
+            print(perfil)
             perfil.save()
             messages.success(self.request, "Perfil atualizado com sucesso.")
+            
         except Exception as e:
             messages.error(self.request, f"Erro ao atualizar o perfil: {e}")
         
@@ -274,16 +295,15 @@ class MentorProfileDetailView(LoginRequiredMixin, DetailView, FormView):
         context = super().get_context_data(**kwargs)
         context['habilidades'] = self.object.habilidades
         context['redesSociais'] = self.object.redesSociais
-        context['horarios'] = self.object.horariosDisponiveis[0]  if self.object.horariosDisponiveis else '' 
-        context['dados'] = self.request.user
-        context['diasAtendimento'] = list(
-            map(
-                lambda dia: 
-                    dias_semana.get(dia, "Dia Inválido"), 
-                    self.object.horariosDisponiveis[1]['atende'] if self.object.horariosDisponiveis else '' 
-            )
-        )
-        context['dados']=UserService.get_user_by_id(iduser)
+        context['horarios'] = self.object.horariosDisponiveis[0] if self.object.horariosDisponiveis else ''
+        dias_atendimento = []
+        if self.object.horariosDisponiveis and len(self.object.horariosDisponiveis) > 1:
+            horario = self.object.horariosDisponiveis[1]
+            if isinstance(horario, dict) and 'atende' in horario:
+                dias_atendimento = list(map(lambda dia: dias_semana.get(dia, "Dia Inválido"), horario['atende']))
+        context['diasAtendimento'] = dias_atendimento
+        context['dados'] = UserService.get_user_by_id(iduser)
+
         print(context)
         return context
     
