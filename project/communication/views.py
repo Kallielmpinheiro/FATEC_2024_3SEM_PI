@@ -10,9 +10,12 @@ import pytz
 import logging
 from mongoengine.errors import NotUniqueError, ValidationError
 
+@login_required
 def video_call(request):
     room_name = str(uuid4())
     return render(request, 'communication/video_call.html', {'room_name': room_name})
+    
+@login_required
 
 def ListarMentores(request):
     listM = User.objects.filter(typeUser='Mentor')

@@ -44,4 +44,56 @@
         </div>
     </div>
     {% endif %}
+
+    <!-- Salas de Chat Ativas -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary">
+                    <h3 class="card-title mb-0 text-white">Salas de Chat Ativas</h3>
+                </div>
+                <div class="card-body">
+                    {% if salas_abertas %}
+                    <ul class="list-group">
+                        {% for sala in salas_abertas %}
+                        <li class="list-group-item border-0 border-bottom">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h5 class="mb-0">Sala #{{ sala.sala_id }}</h5>
+                                <small class="text-muted">Última atualização: {{ sala.last_activity|date:"d/m/Y H:i" }}</small>
+                            </div>
+                            <p class="text-muted mb-1">Mentor: {{ sala.mentor_id }} | Mentorado: {{ sala.mentorado_id }}</p>
+
+                            {% if sala.mensagens %}
+                            <div class="bg-light p-3 rounded">
+                                <h6 class="text-muted mb-2">Últimas Mensagens</h6>
+                                {% for mensagem in sala.mensagens|slice:":3" %}
+                                <div class="mb-2">
+                                    <strong>{{ mensagem.sender }}:</strong>
+                                    <span>{{ mensagem.content }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <p class="text-muted">Nenhuma mensagem enviada ainda.</p>
+                            {% endif %}
+
+                            <form action="{% url 'communication:entrar_na_sala' salaId=sala.salaId %}" method="post" class="mt-3">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary btn-sm w-100">
+                                    <i class="fas fa-sign-in-alt"></i> Entrar na Sala
+                                </button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <p class="text-muted mb-0">Você não está relacionado a nenhuma sala de chat no momento.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}

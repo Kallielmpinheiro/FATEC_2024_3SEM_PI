@@ -87,11 +87,11 @@ class Perfil(Document):
         return f"id:{self.iduser}, nome: {self.nome}, nivelExperiencia: {self.nivelExperiencia}, habilidades: {', '.join(self.habilidades)}, type: {self.typeUser}"
     
     meta = {
-        'indexes':[
-            {
-                'fields':['iduser','cpf'],
-                'unique':True
-            }
+        'indexes': [
+            {'fields': ['iduser', 'cpf'], 'unique': True},
+            {'fields': ['habilidades']},  # Índice para consultas por habilidades
+            {'fields': ['areaAtuacao']},  # Índice para área de atuação
+            {'fields': ['typeUser']},     # Índice para tipo de usuário
         ]
     }
 

@@ -16,6 +16,7 @@ import os
 from django.conf import settings
 import jwt
 from django.utils.timezone import now
+import json
 
 connectMongoDB()
 
@@ -131,7 +132,7 @@ class UserRegistrationView(FormView):
                 messages.error(self.request, f"{field.capitalize()}: {error}")
         return super().form_invalid(form)
 
-class LogoutView(FormView):
+class LogoutView(LoginRequiredMixin,FormView):
     def get(self, request, *args, **kwargs):
         remember_me = request.COOKIES.get('remember_token')
         logout(request)
@@ -223,9 +224,10 @@ class DashboardContaView(LoginRequiredMixin, FormView):
             user = self.request.user
             user.nome = perfil_data['nome']
             user.save()
-            
+            print(perfil)
             perfil.save()
             messages.success(self.request, "Perfil atualizado com sucesso.")
+            
         except Exception as e:
             messages.error(self.request, f"Erro ao atualizar o perfil: {e}")
         
@@ -293,16 +295,15 @@ class MentorProfileDetailView(LoginRequiredMixin, DetailView, FormView):
         context = super().get_context_data(**kwargs)
         context['habilidades'] = self.object.habilidades
         context['redesSociais'] = self.object.redesSociais
-        context['horarios'] = self.object.horariosDisponiveis[0]  if self.object.horariosDisponiveis else '' 
-        context['dados'] = self.request.user
-        context['diasAtendimento'] = list(
-            map(
-                lambda dia: 
-                    dias_semana.get(dia, "Dia Inválido"), 
-                    self.object.horariosDisponiveis[1]['atende'] if self.object.horariosDisponiveis else '' 
-            )
-        )
-        context['dados']=UserService.get_user_by_id(iduser)
+        context['horarios'] = self.object.horariosDisponiveis[0] if self.object.horariosDisponiveis else ''
+        dias_atendimento = []
+        if self.object.horariosDisponiveis and len(self.object.horariosDisponiveis) > 1:
+            horario = self.object.horariosDisponiveis[1]
+            if isinstance(horario, dict) and 'atende' in horario:
+                dias_atendimento = list(map(lambda dia: dias_semana.get(dia, "Dia Inválido"), horario['atende']))
+        context['diasAtendimento'] = dias_atendimento
+        context['dados'] = UserService.get_user_by_id(iduser)
+
         print(context)
         return context
     
